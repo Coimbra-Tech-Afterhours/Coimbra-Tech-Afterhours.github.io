@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+  <!-- Background Circle -->
+  <circle cx="256" cy="256" r="240" fill="#0a0a0a"/>
+
+  <!-- Gradient Definition -->
+  <defs>
+    <linearGradient id="techGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#00c3ff;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#0066ff;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+
+  <!-- Tech Symbol - Abstract brackets/code -->
+  <g fill="url(#techGradient)">
+    <!-- Left bracket -->
+    <path d="M 160 180 L 120 256 L 160 332 L 180 320 L 148 256 L 180 192 Z" stroke="url(#techGradient)" stroke-width="4" fill="url(#techGradient)"/>
+
+    <!-- Right bracket -->
+    <path d="M 352 180 L 392 256 L 352 332 L 332 320 L 364 256 L 332 192 Z" stroke="url(#techGradient)" stroke-width="4" fill="url(#techGradient)"/>
+
+    <!-- Center dot/slash representing community connection -->
+    <rect x="236" y="206" width="40" height="100" rx="20" fill="url(#techGradient)" transform="rotate(-15 256 256)"/>
+  </g>
+
+  <!-- Outer ring for emphasis -->
+  <circle cx="256" cy="256" r="235" fill="none" stroke="url(#techGradient)" stroke-width="10" opacity="0.3"/>
+</svg>
