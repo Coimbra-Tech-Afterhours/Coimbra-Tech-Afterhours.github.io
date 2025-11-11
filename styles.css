@@ -595,17 +595,6 @@ h2 {
     height: 20px;
 }
 
-.contact-email {
-    font-size: 1.1rem;
-    margin-bottom: var(--spacing-xs);
-}
-
-.contact-location {
-    font-size: 0.95rem;
-    color: var(--color-text-muted);
-    margin-bottom: var(--spacing-md);
-}
-
 .contact-feedback {
     font-size: 0.95rem;
     color: var(--color-text-muted);
@@ -614,6 +603,11 @@ h2 {
     max-width: 600px;
     margin-left: auto;
     margin-right: auto;
+}
+
+.contact-email {
+    font-size: 1.1rem;
+    margin-bottom: var(--spacing-md);
 }
 
 .contact-social {
