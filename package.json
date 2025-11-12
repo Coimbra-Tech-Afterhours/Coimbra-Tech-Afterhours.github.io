@@ -1,0 +1,23 @@
+{
+  "name": "coimbra-tech-afterhours",
+  "version": "1.0.0",
+  "description": "Landing page for the Coimbra Tech Afterhours community",
+  "type": "module",
+  "scripts": {
+    "fetch-events": "node scripts/fetch-events-from-notion.mjs"
+  },
+  "keywords": [
+    "coimbra",
+    "tech",
+    "community",
+    "afterhours"
+  ],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "@notionhq/client": "^2.2.15",
+    "dotenv": "^16.4.5"
+  },
+  "devDependencies": {}
+}
+
