@@ -1,0 +1,33 @@
+[
+  {
+    "Status": "Past",
+    "Link": "https://citysocializer.com/socials/372656e6-5ec0-44d6-b06c-704e1b033cfd",
+    "Place Name": [
+      "Praxis"
+    ],
+    "Type": "Afterhours",
+    "Date": "2025-11-06T18:30:00.000+00:00",
+    "Language": [
+      "PT",
+      "EN"
+    ],
+    "Place Link": [
+      "https://maps.app.goo.gl/4EneRxTMMFghs94G8"
+    ],
+    "Name": "Coimbra Tech Afterhours #01",
+    "datePretty": "6 Nov 2025 18:30"
+  },
+  {
+    "Status": "Upcoming",
+    "Place Name": [],
+    "Type": "Afterhours",
+    "Date": "2025-12-02T18:30:00.000+00:00",
+    "Language": [
+      "PT",
+      "EN"
+    ],
+    "Place Link": [],
+    "Name": "Coimbra Tech Afterhours #02",
+    "datePretty": "2 Dec 2025 18:30"
+  }
+]
