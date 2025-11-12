@@ -1,0 +1,70 @@
+# Sync events from Notion database to static JSON file
+#
+# Setup required secrets in GitHub:
+#   1. Go to: Settings → Secrets and variables → Actions
+#   2. Add the following repository secrets:
+#      - NOTION_API_KEY: Your Notion integration API key
+#      - NOTION_EVENTS_DATABASE: The ID of your Events database
+#      - NOTION_PLACES_DATABASE: (Optional) The ID of your Places database
+#
+# This workflow runs hourly (UTC) and can be triggered manually via workflow_dispatch
+
+name: Sync from Notion
+
+on:
+  schedule:
+    - cron: "0 * * * *"   # hourly, UTC
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: sync-notion
+  cancel-in-progress: true
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          persist-credentials: true
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: "npm"
+
+      - name: Install dependencies
+        run: |
+          if [ -f package-lock.json ]; then
+            npm ci
+          else
+            npm install
+          fi
+
+      - name: Ensure public directory exists (if script writes there)
+        run: mkdir -p public
+
+      - name: Fetch events from Notion
+        env:
+          NOTION_API_KEY: ${{ secrets.NOTION_API_KEY }}
+          NOTION_EVENTS_DATABASE_ID: ${{ secrets.NOTION_EVENTS_DATABASE }}
+          NOTION_PLACES_DATABASE_ID: ${{ secrets.NOTION_PLACES_DATABASE }}
+        run: node scripts/fetch-events-from-notion.mjs
+
+      - name: Commit & push if changed
+        run: |
+          if [ -n "$(git status --porcelain)" ]; then
+            git config user.name "github-actions[bot]"
+            git config user.email "github-actions[bot]@users.noreply.github.com"
+            git add -A
+            git commit -m "chore(data): update events from Notion [skip ci]"
+            git push
+          else
+            echo "No changes to commit."
+          fi
+
