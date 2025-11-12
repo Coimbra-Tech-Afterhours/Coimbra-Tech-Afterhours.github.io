@@ -45,13 +45,16 @@
 
     <!-- Styles -->
     <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="assets/css/events.css">
 </head>
 <body>
     <header>
         <nav>
             <div class="logo-container">
-                <img src="img/logo.png" alt="Coimbra Tech Logo">
-                <span class="logo-text">Coimbra Tech</span>
+                <a href="/" style="display: flex; align-items: center; gap: var(--spacing-sm); text-decoration: none;">
+                    <img src="img/logo.png" alt="Coimbra Tech Logo">
+                    <span class="logo-text">Coimbra Tech</span>
+                </a>
             </div>
             <button class="menu-toggle" id="menu-toggle" aria-label="Toggle menu">
                 <span></span>
@@ -59,7 +62,6 @@
                 <span></span>
             </button>
             <ul class="nav-links" id="nav-links">
-                <li><a href="#hero" data-lang="pt" class="active">Início</a><a href="#hero" data-lang="en">Home</a></li>
                 <li><a href="#about" data-lang="pt" class="active">Sobre</a><a href="#about" data-lang="en">About</a></li>
                 <li><a href="#team" data-lang="pt" class="active">Equipa</a><a href="#team" data-lang="en">Team</a></li>
                 <li><a href="#events" data-lang="pt" class="active">Eventos</a><a href="#events" data-lang="en">Events</a></li>
@@ -282,58 +284,25 @@
         </section>
 
         <!-- Events Section -->
-        <section id="events">
-            <div data-lang="pt" class="active">
-                <h2>
-                    <svg class="section-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
-                    </svg>
-                    Eventos
-                </h2>
-                <div class="content-block">
-                    <p>Encontros mensais após o trabalho (18h30) em bares, cafés ou espaços parceiros em Coimbra. <br/>Conversas informais, partilha de experiências e networking autêntico.</p>
+        <section id="events" class="events">
+            <h2>
+                <svg class="section-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+                </svg>
+                <span data-i18n-pt="Próximos eventos" data-i18n-en="Upcoming events">Próximos eventos</span>
+            </h2>
+            <div class="content-block">
+                <div data-lang="pt" class="active">
+                    <p>Eventos da comunidade e de parceiros em Coimbra. <br/>Encontros após o trabalho, conversas informais, partilha de experiências e networking autêntico.</p>
                 </div>
-                <div class="event-cards">
-                    <div class="event-card">
-                        <h3>Evento mais recente</h3>
-                        <p>Coimbra Tech Afterhours #1</p>
-                        <a href="https://citysocializer.com/socials/372656e6-5ec0-44d6-b06c-704e1b033cfd" class="button button-secondary" target="_blank" rel="noopener noreferrer">Ver detalhes</a>
-                    </div>
-                    <div class="event-card disabled">
-                        <h3>Próximos Eventos</h3>
-                        <p>Em breve</p>
-                        <span class="button button-secondary" 
-                              style="opacity: 0.6; cursor: not-allowed;"
-                              title="Em breve"
-                              aria-label="Próximos Eventos - Em breve">Ver próximos eventos</span>
-                    </div>
+                <div data-lang="en">
+                    <p>Community and partner events in Coimbra. <br/>After-work meetups, informal talks, shared experiences, and genuine networking.</p>
                 </div>
             </div>
-            <div data-lang="en">
-                <h2>
-                    <svg class="section-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
-                    </svg>
-                    Events
-                </h2>
-                <div class="content-block">
-                    <p>Monthly after-work meetups (6:30 PM) at bars, cafés, or partner spaces in Coimbra. <br/>Informal talks, shared experiences, and genuine networking.</p>
-                </div>
-                <div class="event-cards">
-                    <div class="event-card">
-                        <h3>Most recent Event</h3>
-                        <p>Coimbra Tech Afterhours #1</p>
-                        <a href="https://citysocializer.com/socials/372656e6-5ec0-44d6-b06c-704e1b033cfd" class="button button-secondary" target="_blank" rel="noopener noreferrer">View details</a>
-                    </div>
-                    <div class="event-card disabled">
-                        <h3>Upcoming Events</h3>
-                        <p>Coming soon</p>
-                        <span class="button button-secondary" 
-                              style="opacity: 0.6; cursor: not-allowed;"
-                              title="Coming soon"
-                              aria-label="Upcoming Events - Coming soon">View upcoming events</span>
-                    </div>
-                </div>
+            <div class="events__featured" aria-live="polite"></div>
+            <div class="events__list" aria-live="polite"></div>
+            <div class="events__cta">
+                <a href="/events.html" class="cta-button" data-i18n-pt="Ver todos os eventos" data-i18n-en="See all events">Ver todos os eventos</a>
             </div>
         </section>
 
@@ -666,5 +635,6 @@
             });
         });
     </script>
+    <script src="assets/js/events.js" defer></script>
 </body>
 </html>

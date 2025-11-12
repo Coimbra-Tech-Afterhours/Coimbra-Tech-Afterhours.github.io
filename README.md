@@ -28,7 +28,6 @@ Coimbra Tech Afterhours is a local community connecting tech professionals and e
 ## Project Structure
 
 ```yaml
-.
 ├── index.html                          # Main HTML file
 ├── styles.css                          # All styles
 ├── package.json                        # Node.js dependencies
@@ -131,6 +130,155 @@ The site can display events from a Notion database. To set this up:
    - Open the site locally and verify events are displayed
 
 **Note:** The `.env` file is gitignored and should never be committed. The Notion API key should only be used in the Node script, never exposed to the frontend.
+
+### Events Data (Notion → GitHub Pages)
+
+The site displays events from a Notion database that are automatically synced to `public/events.json` via a GitHub Actions workflow.
+
+#### Data Flow
+
+1. **Notion Database** → Events are managed in a Notion database with properties like `Name`, `Date`, `Status`, `Type`, `Place Name`, `Place Link`, `Link`, `Language`, etc.
+2. **GitHub Action** → Runs hourly (UTC) and on manual trigger to fetch events from Notion API
+3. **Static JSON** → Events are written to `public/events.json` and committed to the repository
+4. **Frontend** → The homepage and `/events` page fetch and render events from the JSON file
+
+#### Running Locally
+
+To test the events functionality locally:
+
+1. **Ensure events.json exists:**
+
+   ```bash
+   # Option 1: Run the fetch script (requires Notion credentials)
+   npm run fetch-events
+   
+   # Option 2: Copy an existing events.json if available
+   ```
+
+2. **Serve locally:**
+
+   ```bash
+   python -m http.server 8000
+   # or
+   npx http-server -p 8000
+   ```
+
+3. **View the site:**
+   - Homepage: `http://localhost:8000/` - Shows upcoming events section
+   - Events page: `http://localhost:8000/events.html` - Shows full events listing
+
+#### JSON Structure
+
+The `public/events.json` file contains an array of event objects with the following properties:
+
+- `Name` (string) - Event name/title
+- `Date` (string) - ISO 8601 date string
+- `datePretty` (string) - Human-readable date (e.g., "6 Nov 2025 18:30")
+- `Status` (string) - "Upcoming" or "Past"
+- `Type` (string) - Event type (e.g., "Afterhours", "Partner Event")
+- `Language` (array) - Array of language codes (e.g., ["PT", "EN"])
+- `Place Name` (array) - Array with venue name (first element used)
+- `Place Link` (array) - Array with Google Maps URL (first element used)
+- `Link` (string, optional) - RSVP or details URL
+
+#### Customization
+
+**Changing labels/texts (PT/EN):**
+
+- Edit `assets/js/events.js` and modify the `i18n` object
+- Update `data-i18n-pt` and `data-i18n-en` attributes in HTML
+
+**Changing number of events on homepage:**
+
+- Edit `assets/js/events.js` and modify the `CONFIG` object:
+
+  ```javascript
+  const CONFIG = {
+    MAX_HOME_FEATURED: 1,  // Featured event count
+    MAX_HOME_LIST: 2,       // List events count
+  };
+  ```
+
+**Customizing card styles:**
+
+- Edit `assets/css/events.css` to modify event card appearance
+- All styles use CSS variables from `styles.css` for consistency
+
+#### Security Note
+
+**Important:** Secrets (Notion API keys) are stored in GitHub Actions secrets and are **never** exposed to the frontend. The frontend only accesses the public `events.json` file, which contains no sensitive information.
+
+#### Events UI
+
+The events UI is implemented in `/assets/js/events.js` and `/assets/css/events.css`. The UI is data-driven from `/public/events.json` (generated hourly via GitHub Action).
+
+**How it works:**
+- **Homepage (`#events` section):** Shows 1 featured event (first upcoming) + up to 2 additional upcoming events
+- **Events page (`/events.html`):** Shows all upcoming events in a responsive grid (1 column mobile, 2 columns ≥768px), plus past events grouped by year/month
+
+**Customization:**
+
+1. **Number of events on homepage:** Edit `CONFIG.MAX_HOME_FEATURED` and `CONFIG.MAX_HOME_LIST` in `events.js`
+
+2. **Badge colors:** Edit CSS variables in `events.css`:
+   ```css
+   --events-accent: #39d3c2;   /* teal for Afterhours */
+   --events-partner: #7a6ff0;  /* violet for Partner Event */
+   ```
+
+3. **Grid breakpoints:** Edit media queries in `events.css`:
+   ```css
+   @media (min-width: 768px) {
+     .grid--events {
+       grid-template-columns: repeat(2, 1fr);
+     }
+   }
+   ```
+
+4. **Card styling:** All card styles use CSS variables (`--events-surface`, `--events-border`, etc.) defined at the top of `events.css`
+
+**Accessibility:**
+- Event titles are clickable links when `Link` exists
+- Whole card is clickable via overlay anchor (only when `Link` exists)
+- Disabled "Coming soon" buttons use `aria-disabled="true"`
+- All dates use semantic `<time datetime="ISO">` elements
+- Keyboard focus styles on all interactive elements
+- Icons have `aria-hidden="true"` (decorative)
+
+**Empty states:**
+- Shows skeleton shimmer while loading
+- Friendly empty messages with PT/EN i18n support
+
+#### Simple Events List
+
+The events UI uses a simple, readable list format. Data flows from Notion → GitHub Action → `public/events.json` → simple list UI.
+
+**How it works:**
+- **Homepage (`#events` section):** Shows up to 3 upcoming events in a simple list
+- **Events page (`/events.html`):** Shows all upcoming events, plus past events grouped by year/month
+
+**Customization:**
+
+1. **Number of events on homepage:** Edit `MAX_HOME_EVENTS` constant in `events.js`:
+   ```javascript
+   const CONFIG = {
+     MAX_HOME_EVENTS: 3,  // Change this number
+   };
+   ```
+
+2. **Type badge colors:** Edit CSS variables in `events.css`:
+   ```css
+   --type-afterhours: #39d3c2;  /* Teal for Afterhours */
+   --type-partner: #7768f8;      /* Violet for Partner Event */
+   ```
+
+3. **Languages display:** Languages are automatically shown if present in the data. To hide them, modify the template in `createEventRow()` to omit the languages span.
+
+4. **Row spacing:** Adjust `.event-row` padding and gap values in `events.css`
+
+5. **Mobile breakpoint:** Edit the media query at `@media (max-width: 720px)` to change when rows stack
+
+**Security note:** No secrets are exposed on the frontend. The JSON file is public and generated hourly via GitHub Action.
 
 ### Deployment
 
