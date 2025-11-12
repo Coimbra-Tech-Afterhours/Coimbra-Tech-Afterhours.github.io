@@ -19,6 +19,24 @@
   },
   {
     "Status": "Upcoming",
+    "Link": "https://impostor.pm/club/coimbra",
+    "Place Name": [
+      "jeKnowledge"
+    ],
+    "Type": "Partner Event",
+    "Date": "2025-11-18T18:30:00.000+00:00",
+    "Language": [
+      "PT",
+      "EN"
+    ],
+    "Place Link": [
+      "https://maps.app.goo.gl/H8sa7BvQphoiia4J6"
+    ],
+    "Name": "The Impostor PM Coimbra #8",
+    "datePretty": "18 Nov 2025 18:30"
+  },
+  {
+    "Status": "Upcoming",
     "Place Name": [],
     "Type": "Afterhours",
     "Date": "2025-12-02T18:30:00.000+00:00",
