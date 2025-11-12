@@ -37,6 +37,24 @@
   },
   {
     "Status": "Upcoming",
+    "Link": "https://luma.com/1v8v9or8?tk=nuZDRa",
+    "Place Name": [
+      "Pink Room"
+    ],
+    "Type": "Partner Event",
+    "Date": "2025-11-20T18:45:00.000+00:00",
+    "Language": [
+      "PT",
+      "EN"
+    ],
+    "Place Link": [
+      "https://maps.app.goo.gl/X6Dhfqq9Toc2NhaF7"
+    ],
+    "Name": "Coimbra JS - Mobile November",
+    "datePretty": "20 Nov 2025 18:45"
+  },
+  {
+    "Status": "Upcoming",
     "Place Name": [],
     "Type": "Afterhours",
     "Date": "2025-12-02T18:30:00.000+00:00",
