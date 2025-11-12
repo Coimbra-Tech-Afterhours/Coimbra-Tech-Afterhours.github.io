@@ -348,17 +348,29 @@
                 </h2>
                 <div class="join-steps">
                     <div class="step-card">
-                        <div class="step-number">1</div>
+                        <div class="step-number">
+                            <span class="step-label active" data-lang="pt">Passo</span>
+                            <span class="step-label" data-lang="en">Step</span>
+                            <span class="step-value">1</span>
+                        </div>
                         <h3>Preencher formulário</h3>
                         <p>Inscrever para receber novidades</p>
                     </div>
                     <div class="step-card">
-                        <div class="step-number">2</div>
+                        <div class="step-number">
+                            <span class="step-label active" data-lang="pt">Passo</span>
+                            <span class="step-label" data-lang="en">Step</span>
+                            <span class="step-value">2</span>
+                        </div>
                         <h3>Entrar no grupo WhatsApp</h3>
                         <p>Receber atualizações e conversar</p>
                     </div>
                     <div class="step-card">
-                        <div class="step-number">3</div>
+                        <div class="step-number">
+                            <span class="step-label active" data-lang="pt">Passo</span>
+                            <span class="step-label" data-lang="en">Step</span>
+                            <span class="step-value">3</span>
+                        </div>
                         <h3>Confirmar presença</h3>
                         <p>Garantir o lugar através do link</p>
                     </div>
@@ -376,17 +388,29 @@
                 </h2>
                 <div class="join-steps">
                     <div class="step-card">
-                        <div class="step-number">1</div>
+                        <div class="step-number">
+                            <span class="step-label" data-lang="pt">Passo</span>
+                            <span class="step-label active" data-lang="en">Step</span>
+                            <span class="step-value">1</span>
+                        </div>
                         <h3>Fill out the form</h3>
                         <p>Sign up for updates</p>
                     </div>
                     <div class="step-card">
-                        <div class="step-number">2</div>
+                        <div class="step-number">
+                            <span class="step-label" data-lang="pt">Passo</span>
+                            <span class="step-label active" data-lang="en">Step</span>
+                            <span class="step-value">2</span>
+                        </div>
                         <h3>Join WhatsApp</h3>
                         <p>Get news and chat with the community</p>
                     </div>
                     <div class="step-card">
-                        <div class="step-number">3</div>
+                        <div class="step-number">
+                            <span class="step-label" data-lang="pt">Passo</span>
+                            <span class="step-label active" data-lang="en">Step</span>
+                            <span class="step-value">3</span>
+                        </div>
                         <h3>RSVP</h3>
                         <p>Secure your spot via event link</p>
                     </div>
@@ -559,6 +583,11 @@
             // Update theme toggle text spans
             document.querySelectorAll('.theme-toggle span[data-lang]').forEach(span => {
                 span.classList.toggle('active', span.getAttribute('data-lang') === lang);
+            });
+            
+            // Update step label visibility based on language
+            document.querySelectorAll('.step-label[data-lang]').forEach(label => {
+                label.classList.toggle('active', label.getAttribute('data-lang') === lang);
             });
             
             // Update LinkedIn tooltip visibility based on language
