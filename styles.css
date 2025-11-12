@@ -824,11 +824,12 @@ h2 {
     height: 20px;
 }
 
-.soon-badge {
-    font-size: 0.75rem;
-    color: var(--color-text-muted);
-    font-weight: 400;
-    margin-left: 0.25rem;
+.social-link.disabled[data-lang] {
+    display: none;
+}
+
+.social-link.disabled[data-lang].active {
+    display: inline-flex;
 }
 
 /* Footer */
