@@ -29,9 +29,9 @@ Coimbra Tech Afterhours is a local community connecting tech professionals and e
 .
 ├── index.html          # Main HTML file
 ├── styles.css          # All styles
-├── logo.png            # Logo image
-├── logo.svg            # Logo SVG
 ├── img/                # Images directory
+│   ├── logo.png        # Logo image
+│   ├── logo.svg        # Logo SVG
 │   ├── ricardo-vitorino.jpeg
 │   └── rui-chicoria.jpeg
 ├── favicon_io/         # Favicon files
