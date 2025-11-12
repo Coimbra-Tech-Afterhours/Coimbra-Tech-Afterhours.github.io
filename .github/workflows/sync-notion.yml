@@ -52,8 +52,8 @@ jobs:
       - name: Fetch events from Notion
         env:
           NOTION_API_KEY: ${{ secrets.NOTION_API_KEY }}
-          NOTION_EVENTS_DATABASE_ID: ${{ secrets.NOTION_EVENTS_DATABASE }}
-          NOTION_PLACES_DATABASE_ID: ${{ secrets.NOTION_PLACES_DATABASE }}
+          NOTION_EVENTS_DATABASE: ${{ secrets.NOTION_EVENTS_DATABASE }}
+          NOTION_PLACES_DATABASE: ${{ secrets.NOTION_PLACES_DATABASE }}
         run: node scripts/fetch-events-from-notion.mjs
 
       - name: Commit & push if changed
