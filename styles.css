@@ -126,13 +126,14 @@ nav {
     min-width: 44px;
     justify-content: center;
     align-items: center;
+    color: var(--color-text);
 }
 
 .menu-toggle span {
     display: block;
     width: 24px;
     height: 2px;
-    background: #ffffff;
+    background: currentColor;
     transition: all 0.3s ease;
     border-radius: 2px;
 }
@@ -154,10 +155,14 @@ nav {
     gap: var(--spacing-md);
     list-style: none;
     align-items: center;
+    margin: 0;
+    padding: 0;
 }
 
 .nav-links li {
     position: relative;
+    margin: 0;
+    padding: 0;
 }
 
 .nav-links a {
@@ -166,6 +171,7 @@ nav {
     font-size: 0.95rem;
     transition: color 0.3s ease;
     padding: 0.5rem 0;
+    display: block;
 }
 
 .nav-links a:hover {
@@ -246,17 +252,21 @@ nav {
 
 .theme-toggle-mobile .theme-toggle {
     width: 100%;
-    justify-content: flex-start;
-    padding: var(--spacing-sm);
+    justify-content: center;
+    padding: 0.5rem 0;
     gap: var(--spacing-xs);
+    font-size: 0.95rem;
+    color: var(--color-text-muted);
 }
 
 .theme-toggle-mobile .theme-toggle span[data-lang] {
     display: none;
+    font-size: 0.95rem;
 }
 
 .theme-toggle-mobile .theme-toggle span[data-lang].active {
     display: inline;
+    font-size: 0.95rem;
 }
 
 .theme-toggle-desktop {
@@ -268,9 +278,10 @@ nav {
 }
 
 .lang-switcher-mobile .lang-switcher {
-    padding: var(--spacing-sm) 0;
+    padding: 0.5rem 0;
     border-top: 1px solid rgba(255, 255, 255, 0.1);
-    margin-top: var(--spacing-xs);
+    margin-top: 0;
+    justify-content: center;
 }
 
 [data-theme="light"] .lang-switcher-mobile .lang-switcher {
@@ -918,13 +929,28 @@ footer {
         display: none;
         flex-direction: column;
         width: 100%;
-        gap: var(--spacing-sm);
-        padding: var(--spacing-md) 0;
+        gap: 0;
+        padding: 0;
+        margin: 0;
         order: 4;
+        align-items: center;
     }
 
     .nav-links.active {
         display: flex;
+    }
+
+    .nav-links li {
+        width: 100%;
+        margin: 0;
+        padding: 0;
+        text-align: center;
+    }
+
+    .nav-links a {
+        padding: 0.75rem 0;
+        text-align: center;
+        display: inline-block;
     }
 
     .header-controls {
@@ -938,15 +964,28 @@ footer {
     .theme-toggle-mobile {
         display: block;
         width: 100%;
+        margin: 0;
+        padding: 0;
     }
 
     .theme-toggle-mobile .theme-toggle {
         border-top: 1px solid rgba(255, 255, 255, 0.1);
-        margin-top: var(--spacing-xs);
+        margin-top: 0;
+        padding: 0.75rem 0;
     }
 
     [data-theme="light"] .theme-toggle-mobile .theme-toggle {
         border-top: 1px solid rgba(0, 0, 0, 0.1);
+    }
+
+    .lang-switcher-mobile {
+        width: 100%;
+        margin: 0;
+        padding: 0;
+    }
+
+    .lang-switcher-mobile .lang-switcher {
+        padding: 0.75rem 0;
     }
 
     .lang-switcher-desktop {
