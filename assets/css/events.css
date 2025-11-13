@@ -17,7 +17,9 @@
 
 /* Events page */
 #events-page {
-  padding: var(--spacing-xl) 0;
+  padding: var(--spacing-xl) var(--spacing-md);
+  max-width: 1200px;
+  margin: 0 auto;
 }
 
 #events-page section:first-of-type {
@@ -302,6 +304,16 @@
 }
 
 /* Responsive */
+@media (max-width: 768px) {
+  #events-page {
+    padding: var(--spacing-lg) var(--spacing-sm);
+  }
+
+  #events-page section:first-of-type {
+    padding-top: var(--spacing-lg);
+  }
+}
+
 @media (max-width: 720px) {
   .event-row {
     grid-template-columns: 1fr;
