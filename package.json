@@ -4,7 +4,9 @@
   "description": "Landing page for the Coimbra Tech Afterhours community",
   "type": "module",
   "scripts": {
-    "fetch-events": "node scripts/fetch-events-from-notion.mjs"
+    "fetch-events": "node scripts/fetch-events-from-notion.mjs",
+    "check-updates": "node scripts/check-notion-updates.mjs",
+    "test-sync": "node scripts/test-sync.mjs"
   },
   "keywords": [
     "coimbra",
