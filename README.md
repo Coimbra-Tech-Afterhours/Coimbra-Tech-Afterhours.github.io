@@ -213,6 +213,7 @@ The `public/events.json` file contains an array of event objects with the follow
 The events UI is implemented in `/assets/js/events.js` and `/assets/css/events.css`. The UI is data-driven from `/public/events.json` (generated hourly via GitHub Action).
 
 **How it works:**
+
 - **Homepage (`#events` section):** Shows 1 featured event (first upcoming) + up to 2 additional upcoming events
 - **Events page (`/events.html`):** Shows all upcoming events in a responsive grid (1 column mobile, 2 columns ≥768px), plus past events grouped by year/month
 
@@ -221,12 +222,14 @@ The events UI is implemented in `/assets/js/events.js` and `/assets/css/events.c
 1. **Number of events on homepage:** Edit `CONFIG.MAX_HOME_FEATURED` and `CONFIG.MAX_HOME_LIST` in `events.js`
 
 2. **Badge colors:** Edit CSS variables in `events.css`:
+
    ```css
    --events-accent: #39d3c2;   /* teal for Afterhours */
    --events-partner: #7a6ff0;  /* violet for Partner Event */
    ```
 
 3. **Grid breakpoints:** Edit media queries in `events.css`:
+
    ```css
    @media (min-width: 768px) {
      .grid--events {
@@ -238,6 +241,7 @@ The events UI is implemented in `/assets/js/events.js` and `/assets/css/events.c
 4. **Card styling:** All card styles use CSS variables (`--events-surface`, `--events-border`, etc.) defined at the top of `events.css`
 
 **Accessibility:**
+
 - Event titles are clickable links when `Link` exists
 - Whole card is clickable via overlay anchor (only when `Link` exists)
 - Disabled "Coming soon" buttons use `aria-disabled="true"`
@@ -246,6 +250,7 @@ The events UI is implemented in `/assets/js/events.js` and `/assets/css/events.c
 - Icons have `aria-hidden="true"` (decorative)
 
 **Empty states:**
+
 - Shows skeleton shimmer while loading
 - Friendly empty messages with PT/EN i18n support
 
@@ -254,12 +259,14 @@ The events UI is implemented in `/assets/js/events.js` and `/assets/css/events.c
 The events UI uses a simple, readable list format. Data flows from Notion → GitHub Action → `public/events.json` → simple list UI.
 
 **How it works:**
+
 - **Homepage (`#events` section):** Shows up to 3 upcoming events in a simple list
 - **Events page (`/events.html`):** Shows all upcoming events, plus past events grouped by year/month
 
 **Customization:**
 
 1. **Number of events on homepage:** Edit `MAX_HOME_EVENTS` constant in `events.js`:
+
    ```javascript
    const CONFIG = {
      MAX_HOME_EVENTS: 3,  // Change this number
@@ -267,6 +274,7 @@ The events UI uses a simple, readable list format. Data flows from Notion → Gi
    ```
 
 2. **Type badge colors:** Edit CSS variables in `events.css`:
+
    ```css
    --type-afterhours: #39d3c2;  /* Teal for Afterhours */
    --type-partner: #7768f8;      /* Violet for Partner Event */
