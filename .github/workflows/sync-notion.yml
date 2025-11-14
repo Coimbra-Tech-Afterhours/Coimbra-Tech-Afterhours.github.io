@@ -49,7 +49,21 @@ jobs:
       - name: Ensure public directory exists (if script writes there)
         run: mkdir -p public
 
+      - name: Check if Notion database was updated
+        id: check_updates
+        env:
+          NOTION_API_KEY: ${{ secrets.NOTION_API_KEY }}
+          NOTION_EVENTS_DATABASE: ${{ secrets.NOTION_EVENTS_DATABASE }}
+        run: |
+          if node scripts/check-notion-updates.mjs; then
+            echo "fetch_needed=true" >> $GITHUB_OUTPUT
+          else
+            echo "fetch_needed=false" >> $GITHUB_OUTPUT
+          fi
+        continue-on-error: true
+
       - name: Fetch events from Notion
+        if: steps.check_updates.outputs.fetch_needed == 'true'
         env:
           NOTION_API_KEY: ${{ secrets.NOTION_API_KEY }}
           NOTION_EVENTS_DATABASE: ${{ secrets.NOTION_EVENTS_DATABASE }}
@@ -58,13 +72,35 @@ jobs:
 
       - name: Commit & push if changed
         run: |
-          if [ -n "$(git status --porcelain)" ]; then
+          # Check if there are any changes
+          if [ -z "$(git status --porcelain)" ]; then
+            echo "No changes to commit."
+            exit 0
+          fi
+          
+          # Check if only .last-sync changed (no actual data changes)
+          CHANGED_FILES=$(git status --porcelain | awk '{print $2}')
+          ONLY_SYNC_FILE=true
+          for file in $CHANGED_FILES; do
+            if [ "$file" != ".last-sync" ]; then
+              ONLY_SYNC_FILE=false
+              break
+            fi
+          done
+          
+          if [ "$ONLY_SYNC_FILE" = true ]; then
+            echo "Only .last-sync changed, committing timestamp update..."
+            git config user.name "github-actions[bot]"
+            git config user.email "github-actions[bot]@users.noreply.github.com"
+            git add .last-sync
+            git commit -m "chore(sync): update last sync timestamp"
+            git push
+          else
+            echo "Data changes detected, committing updates..."
             git config user.name "github-actions[bot]"
             git config user.email "github-actions[bot]@users.noreply.github.com"
             git add -A
             git commit -m "chore(data): update events from Notion"
             git push
-          else
-            echo "No changes to commit."
           fi
 

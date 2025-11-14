@@ -15,9 +15,10 @@
  */
 
 import { Client } from "@notionhq/client";
-import { writeFile, mkdir } from "fs/promises";
+import { writeFile, mkdir, readFile } from "fs/promises";
 import { dirname, join } from "path";
 import { fileURLToPath } from "url";
+import { createHash } from "crypto";
 import dotenv from "dotenv";
 
 // Load environment variables from .env file if it exists
@@ -213,11 +214,78 @@ function mapEvent(page, debug = false) {
 }
 
 /**
+ * Reads the last sync timestamp from file
+ */
+async function readLastSyncTimestamp() {
+  const syncFile = join(ROOT_DIR, ".last-sync");
+  try {
+    const content = await readFile(syncFile, "utf-8");
+    return content.trim();
+  } catch (err) {
+    if (err.code === "ENOENT") {
+      return null;
+    }
+    throw err;
+  }
+}
+
+/**
+ * Writes the last sync timestamp to file
+ */
+async function writeLastSyncTimestamp(timestamp) {
+  const syncFile = join(ROOT_DIR, ".last-sync");
+  await writeFile(syncFile, timestamp, "utf-8");
+}
+
+/**
+ * Gets the database's last edited time
+ */
+async function getDatabaseLastEditedTime() {
+  try {
+    const database = await notion.databases.retrieve({
+      database_id: NOTION_EVENTS_DATABASE_ID,
+    });
+    return database.last_edited_time;
+  } catch (error) {
+    console.warn("⚠️  Could not retrieve database metadata, proceeding with fetch:", error.message);
+    return null;
+  }
+}
+
+/**
+ * Computes a hash of the events array for comparison
+ */
+function computeEventsHash(events) {
+  const content = JSON.stringify(events);
+  return createHash("sha256").update(content).digest("hex");
+}
+
+/**
+ * Reads existing events.json and computes its hash
+ */
+async function getExistingEventsHash() {
+  const outputPath = join(ROOT_DIR, "public", "events.json");
+  try {
+    const content = await readFile(outputPath, "utf-8");
+    const events = JSON.parse(content);
+    return computeEventsHash(events);
+  } catch (err) {
+    if (err.code === "ENOENT") {
+      return null;
+    }
+    throw err;
+  }
+}
+
+/**
  * Main function to fetch events and write JSON file
  */
 async function fetchAndWriteEvents() {
   try {
     console.log("🔄 Fetching events from Notion...");
+
+    // Get database last edited time for timestamp tracking
+    const databaseLastEdited = await getDatabaseLastEditedTime();
 
     // Query the database with filters
     const response = await notion.databases.query({
@@ -250,6 +318,19 @@ async function fetchAndWriteEvents() {
 
     console.log(`✅ Mapped ${validEvents.length} valid events`);
 
+    // Check if content actually changed
+    const newHash = computeEventsHash(validEvents);
+    const existingHash = await getExistingEventsHash();
+    
+    if (existingHash && newHash === existingHash) {
+      console.log("ℹ️  Events content unchanged, no update needed.");
+      // Update sync timestamp even if content didn't change (to track last check)
+      if (databaseLastEdited) {
+        await writeLastSyncTimestamp(databaseLastEdited);
+      }
+      process.exit(0); // Exit successfully without changes
+    }
+
     // Ensure public directory exists
     const publicDir = join(ROOT_DIR, "public");
     try {
@@ -266,6 +347,13 @@ async function fetchAndWriteEvents() {
     await writeFile(outputPath, JSON.stringify(validEvents, null, 2), "utf-8");
 
     console.log(`✅ Successfully wrote ${validEvents.length} events to ${outputPath}`);
+    
+    // Update sync timestamp
+    if (databaseLastEdited) {
+      await writeLastSyncTimestamp(databaseLastEdited);
+      console.log(`✅ Updated sync timestamp: ${databaseLastEdited}`);
+    }
+    
     console.log("🎉 Done!");
   } catch (error) {
     console.error("❌ Error fetching events from Notion:", error.message);
