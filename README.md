@@ -305,4 +305,61 @@ This project is licensed under the MIT License — see the [LICENSE](LICENSE) fi
 - **Email**: <afterhours@coimbratech.org>
 - **GitHub**: [@Coimbra-Tech-Afterhours](https://github.com/Coimbra-Tech-Afterhours)
 
+## SEO & Discovery
+
+The site includes basic SEO optimizations for search engines and AI crawlers:
+
+### robots.txt
+
+Located at `/robots.txt`, this file:
+- Allows all crawlers to access the site
+- Explicitly allows major AI crawlers (GPTBot, Google-Extended, ClaudeBot, PerplexityBot)
+- References the sitemap location
+
+### sitemap.xml
+
+Located at `/sitemap.xml`, this file lists **only on-site URLs**:
+- `https://coimbratech.org/` (homepage)
+- `https://coimbratech.org/events` (events page)
+
+**Note:** External Notion links (Join and Code of Conduct) are **not** included in the sitemap, as they are external resources hosted on Notion.
+
+### Structured Data (JSON-LD)
+
+- **Homepage (`index.html`)**: Includes Organization JSON-LD with community name, URL, logo, social profiles, and location
+- **Events page (`events.html`)**: Dynamically injects Event JSON-LD for all events from `public/events.json` using the `injectEventJsonLd()` function in `assets/js/events.js`
+
+### Meta Tags
+
+Both pages include:
+- Unique `<title>` tags (≤60 characters)
+- Meta descriptions (≤160 characters)
+- Canonical URLs pointing to HTTPS versions
+- Open Graph tags for social sharing
+- Twitter Card tags
+
+**Where to edit:**
+- Titles/descriptions: Edit the `<title>` and `<meta name="description">` tags in `index.html` and `events.html`
+- Canonical URLs: Edit the `<link rel="canonical">` tags in each HTML file
+- Social card image: Update `og:image` and `twitter:image` meta tags to point to `/assets/social-card.png` (1200x630px recommended)
+
+### External Links
+
+External Notion links (Join and Code of Conduct) include:
+- `target="_blank"` to open in new tabs
+- `rel="noopener noreferrer external"` for security and SEO
+
+### Next Steps
+
+1. **Submit sitemap to Google Search Console:**
+   - Add `https://coimbratech.org/sitemap.xml` in Google Search Console
+   - Request indexing for `/` and `/events` pages
+
+2. **Validate structured data:**
+   - Use [Google Rich Results Test](https://search.google.com/test/rich-results) to validate Event JSON-LD on `/events`
+   - Verify Organization JSON-LD on homepage
+
+3. **Create social card image:**
+   - Create a 1200x630px image at `/assets/social-card.png` for optimal social sharing
+
 ## Made in Coimbra, of course. 🇵🇹
