@@ -1,0 +1,17 @@
+User-agent: *
+Allow: /
+Sitemap: https://coimbratech.org/sitemap.xml
+
+# Allow major AI crawlers
+User-agent: GPTBot
+Allow: /
+
+User-agent: Google-Extended
+Allow: /
+
+User-agent: ClaudeBot
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
+
