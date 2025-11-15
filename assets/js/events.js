@@ -286,6 +286,44 @@
   }
 
   /**
+   * Inject Event JSON-LD into document head
+   */
+  function injectEventJsonLd(events) {
+    if (!Array.isArray(events) || !events.length) return;
+    
+    const mapped = events.map(ev => ({
+      "@context": "https://schema.org",
+      "@type": "Event",
+      "name": ev.name,
+      "eventStatus": "https://schema.org/EventScheduled",
+      "eventAttendanceMode": "https://schema.org/OfflineEventAttendanceMode",
+      "startDate": ev.dateISO || ev.date || "",
+      "location": {
+        "@type": "Place",
+        "name": ev.venueName || ev.venue || "Venue TBA",
+        "address": {
+          "@type": "PostalAddress",
+          "addressLocality": "Coimbra",
+          "addressCountry": "PT"
+        }
+      },
+      "organizer": {
+        "@type": "Organization",
+        "name": "Coimbra Tech Afterhours",
+        "url": "https://coimbratech.org"
+      },
+      "inLanguage": ["pt-PT", "en"],
+      "url": "https://coimbratech.org/events",
+      "isAccessibleForFree": true
+    }));
+
+    const script = document.createElement("script");
+    script.type = "application/ld+json";
+    script.textContent = JSON.stringify(mapped);
+    document.head.appendChild(script);
+  }
+
+  /**
    * Render events page
    */
   async function renderEventsPage() {
@@ -376,6 +414,9 @@
     }
 
     updateI18n();
+    
+    // Inject Event JSON-LD
+    injectEventJsonLd(events);
   }
 
   // Initialize i18n on load
