@@ -38,8 +38,8 @@ Coimbra Tech Afterhours is a local community connecting tech professionals and e
 ├── img/                                # Images directory
 │   ├── logo.png                        # Logo image
 │   ├── logo.svg                        # Logo SVG
-│   ├── ricardo-vitorino.jpeg           # Organisers photos
-│   └── rui-chicoria.jpeg
+│   ├── ricardo-vitorino.jpeg           # Organiser photo (Vitorino)
+│   └── rui-chicoria.jpeg               # Organiser photo (Chicória)
 ├── favicon_io/                         # Favicon files
 └── README.md                           # This file
 ```
@@ -138,9 +138,30 @@ The site displays events from a Notion database that are automatically synced to
 #### Data Flow
 
 1. **Notion Database** → Events are managed in a Notion database with properties like `Name`, `Date`, `Status`, `Type`, `Place Name`, `Place Link`, `Link`, `Language`, etc.
-2. **GitHub Action** → Runs hourly (UTC) and on manual trigger to fetch events from Notion API
+2. **GitHub Action (Sync)** → Runs hourly (UTC) and on manual trigger to fetch events from Notion API
 3. **Static JSON** → Events are written to `public/events.json` and committed to the repository
-4. **Frontend** → The homepage and `/events` page fetch and render events from the JSON file
+4. **GitHub Action (Deploy)** → Automatically triggered after sync completes to deploy updated content to GitHub Pages
+5. **Frontend** → The homepage and `/events` page fetch and render events from the JSON file
+
+#### GitHub Actions Workflows
+
+The repository uses three GitHub Actions workflows:
+
+1. **`sync-notion.yml`** — Syncs events from Notion
+   - Runs hourly (UTC) via cron schedule
+   - Can be triggered manually via `workflow_dispatch`
+   - Fetches events from Notion API
+   - Commits changes to `public/events.json`
+   - Automatically triggers deployment workflow
+
+2. **`static.yml`** — Deploys to GitHub Pages
+   - Triggers on pushes to `main` branch
+   - Also triggers automatically after `sync-notion.yml` completes (via `workflow_run`)
+   - Deploys entire repository to GitHub Pages
+
+3. **`sitemap.yml`** — Updates sitemap
+   - Triggers when HTML files or `public/events.json` change
+   - Ensures `sitemap.xml` exists and is up to date
 
 #### Running Locally
 
@@ -290,7 +311,159 @@ The events UI uses a simple, readable list format. Data flows from Notion → Gi
 
 ### Deployment
 
-The site is automatically deployed via GitHub Pages. Push to the `main` branch to deploy.
+The site is automatically deployed via GitHub Pages using the `static.yml` workflow. Deployment happens in two scenarios:
+
+1. **Manual changes** — Any push to the `main` branch automatically triggers deployment
+2. **Automatic sync** — When events are synced from Notion via `sync-notion.yml`, the deployment workflow is automatically triggered via `workflow_run` to ensure the website updates with the latest events
+
+**Note:** The deployment workflow uses a dual-trigger approach (`push` + `workflow_run`) to ensure reliable deployment even when changes are made by GitHub Actions bots.
+
+### Testing Workflows Locally
+
+Before committing workflow changes, test them locally to avoid breaking the production site. Here are recommended testing approaches:
+
+#### Method 1: Test Scripts Locally (Recommended - Safest)
+
+Test the Node.js scripts that the workflows use:
+
+```bash
+# 1. Ensure you have a .env file with Notion credentials
+# NOTION_API_KEY=your_key
+# NOTION_EVENTS_DATABASE=your_database_id
+
+# 2. Test the complete sync workflow locally
+npm run test-sync
+
+# This will:
+# - Check if Notion database was updated
+# - Fetch events if needed
+# - Update public/events.json (locally, not committed)
+# - Update .last-sync timestamp
+```
+
+**What this tests:**
+
+- ✅ Script logic and error handling
+- ✅ Notion API integration
+- ✅ JSON file generation
+- ✅ Skip logic when no updates needed
+
+**What this doesn't test:**
+
+- ❌ Git commit/push logic
+- ❌ GitHub Actions workflow triggers
+- ❌ Deployment workflow
+
+#### Method 2: Test on a Feature Branch (Recommended - Most Realistic)
+
+Test the full workflow on a separate branch:
+
+```bash
+# 1. Create a test branch
+git checkout -b test/workflow-changes
+
+# 2. Commit your workflow changes
+git add .github/workflows/
+git commit -m "test: workflow improvements"
+
+# 3. Push to trigger workflows
+git push origin test/workflow-changes
+
+# 4. Monitor workflows in GitHub Actions tab
+# - sync-notion.yml won't run (only runs on main)
+# - static.yml won't deploy (only deploys main branch)
+# - But you can manually trigger them to test
+```
+
+**Manual workflow testing:**
+
+1. Go to **Actions** tab in GitHub
+2. Select the workflow (e.g., "Sync from Notion")
+3. Click **Run workflow** → Select your test branch → **Run workflow**
+4. Monitor the execution and check logs
+
+**What this tests:**
+
+- ✅ Full GitHub Actions workflow execution
+- ✅ All workflow steps including git operations
+- ✅ Workflow triggers and conditions
+- ✅ Error handling in real environment
+
+**Safety:** Since workflows are configured to only deploy from `main`, testing on a feature branch is safe.
+
+#### Method 3: Validate Workflow Syntax
+
+Check workflow YAML syntax before committing:
+
+```bash
+# Option A: Use GitHub's actionlint (if installed)
+actionlint .github/workflows/*.yml
+
+# Option B: Use yamllint
+yamllint .github/workflows/*.yml
+
+# Option C: Use online validator
+# Copy workflow YAML to: https://github.com/rhysd/actionlint
+```
+
+#### Method 4: Test Workflow Logic with Act (Advanced)
+
+Use [`act`](https://github.com/nektos/act) to run GitHub Actions locally:
+
+```bash
+# Install act (macOS)
+brew install act
+
+# Test sync-notion workflow locally (dry-run, no push)
+act workflow_dispatch -W .github/workflows/sync-notion.yml --dry-run
+
+# Test with secrets (create .secrets file)
+act workflow_dispatch -W .github/workflows/sync-notion.yml \
+  --secret-file .secrets \
+  --env NOTION_EVENTS_DATABASE=your_id
+```
+
+**Note:** `act` has limitations and may not perfectly replicate GitHub's environment, but it's useful for catching syntax errors and basic logic issues.
+
+#### Recommended Testing Workflow
+
+1. **Before committing:**
+
+   ```bash
+   # Test scripts locally
+   npm run test-sync
+   
+   # Validate YAML syntax
+   actionlint .github/workflows/*.yml  # if available
+   ```
+
+2. **After committing to feature branch:**
+
+   ```bash
+   # Push to test branch
+   git push origin test/workflow-changes
+   
+   # Manually trigger workflow in GitHub UI
+   # Monitor execution and logs
+   ```
+
+3. **Before merging to main:**
+
+   - ✅ All tests pass locally
+   - ✅ Workflow executes successfully on test branch
+   - ✅ No errors in workflow logs
+   - ✅ Verify workflow triggers work as expected
+
+#### Quick Test Checklist
+
+- [ ] Scripts run locally without errors (`npm run test-sync`)
+- [ ] Commit logic works correctly (`npm run test-commit-logic`)
+- [ ] Workflow YAML syntax is valid
+- [ ] Workflow executes on test branch
+- [ ] Git operations (commit/push) work correctly
+- [ ] Workflow triggers (`workflow_run`) function properly
+- [ ] Error handling works (test with invalid credentials)
+- [ ] Conditional logic works (test skip scenarios)
 
 ## Contributing
 
@@ -312,6 +485,7 @@ The site includes basic SEO optimizations for search engines and AI crawlers:
 ### robots.txt
 
 Located at `/robots.txt`, this file:
+
 - Allows all crawlers to access the site
 - Explicitly allows major AI crawlers (GPTBot, Google-Extended, ClaudeBot, PerplexityBot)
 - References the sitemap location
@@ -319,6 +493,7 @@ Located at `/robots.txt`, this file:
 ### sitemap.xml
 
 Located at `/sitemap.xml`, this file lists **only on-site URLs**:
+
 - `https://coimbratech.org/` (homepage)
 - `https://coimbratech.org/events` (events page)
 
@@ -332,6 +507,7 @@ Located at `/sitemap.xml`, this file lists **only on-site URLs**:
 ### Meta Tags
 
 Both pages include:
+
 - Unique `<title>` tags (≤60 characters)
 - Meta descriptions (≤160 characters)
 - Canonical URLs pointing to HTTPS versions
@@ -339,6 +515,7 @@ Both pages include:
 - Twitter Card tags
 
 **Where to edit:**
+
 - Titles/descriptions: Edit the `<title>` and `<meta name="description">` tags in `index.html` and `events.html`
 - Canonical URLs: Edit the `<link rel="canonical">` tags in each HTML file
 - Social card image: Update `og:image` and `twitter:image` meta tags to point to `/assets/social-card.png` (1200x630px recommended)
@@ -346,6 +523,7 @@ Both pages include:
 ### External Links
 
 External Notion links (Join and Code of Conduct) include:
+
 - `target="_blank"` to open in new tabs
 - `rel="noopener noreferrer external"` for security and SEO
 
