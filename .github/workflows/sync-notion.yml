@@ -18,6 +18,7 @@ on:
 
 permissions:
   contents: write
+  actions: read
 
 concurrency:
   group: sync-notion
@@ -64,43 +65,95 @@ jobs:
 
       - name: Fetch events from Notion
         if: steps.check_updates.outputs.fetch_needed == 'true'
+        id: fetch_events
         env:
           NOTION_API_KEY: ${{ secrets.NOTION_API_KEY }}
           NOTION_EVENTS_DATABASE: ${{ secrets.NOTION_EVENTS_DATABASE }}
           NOTION_PLACES_DATABASE: ${{ secrets.NOTION_PLACES_DATABASE }}
-        run: node scripts/fetch-events-from-notion.mjs
+        run: |
+          if ! node scripts/fetch-events-from-notion.mjs; then
+            echo "Failed to fetch events from Notion"
+            exit 1
+          fi
+          echo "Events fetched successfully"
 
       - name: Commit & push if changed
+        id: commit_push
         run: |
           # Check if there are any changes
           if [ -z "$(git status --porcelain)" ]; then
             echo "No changes to commit."
+            echo "changes_committed=false" >> $GITHUB_OUTPUT
             exit 0
           fi
+          
+          # Configure git
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
           
           # Check if only .last-sync changed (no actual data changes)
           CHANGED_FILES=$(git status --porcelain | awk '{print $2}')
           ONLY_SYNC_FILE=true
+          DATA_CHANGED=false
+          
           for file in $CHANGED_FILES; do
             if [ "$file" != ".last-sync" ]; then
               ONLY_SYNC_FILE=false
+              # Check if events.json or other data files changed
+              if [[ "$file" == "public/events.json" ]] || [[ "$file" == "public/"* ]]; then
+                DATA_CHANGED=true
+              fi
               break
             fi
           done
           
           if [ "$ONLY_SYNC_FILE" = true ]; then
             echo "Only .last-sync changed, committing timestamp update..."
-            git config user.name "github-actions[bot]"
-            git config user.email "github-actions[bot]@users.noreply.github.com"
             git add .last-sync
             git commit -m "chore(sync): update last sync timestamp"
-            git push
+            echo "commit_message=chore(sync): update last sync timestamp" >> $GITHUB_OUTPUT
+            echo "data_changed=false" >> $GITHUB_OUTPUT
           else
             echo "Data changes detected, committing updates..."
-            git config user.name "github-actions[bot]"
-            git config user.email "github-actions[bot]@users.noreply.github.com"
             git add -A
-            git commit -m "chore(data): update events from Notion"
-            git push
+            if [ "$DATA_CHANGED" = true ]; then
+              git commit -m "chore(data): update events from Notion"
+              echo "commit_message=chore(data): update events from Notion" >> $GITHUB_OUTPUT
+              echo "data_changed=true" >> $GITHUB_OUTPUT
+            else
+              git commit -m "chore: update files from Notion sync"
+              echo "commit_message=chore: update files from Notion sync" >> $GITHUB_OUTPUT
+              echo "data_changed=false" >> $GITHUB_OUTPUT
+            fi
           fi
+          
+          # Push changes
+          if ! git push; then
+            echo "Failed to push changes"
+            exit 1
+          fi
+          
+          echo "changes_committed=true" >> $GITHUB_OUTPUT
+          echo "Changes committed and pushed successfully"
+
+      - name: Trigger deployment workflow
+        if: steps.commit_push.outputs.changes_committed == 'true' && steps.commit_push.outputs.data_changed == 'true'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            // Trigger the deployment workflow via workflow_dispatch
+            // This ensures the deployment runs even if push event doesn't trigger it
+            try {
+              await github.rest.actions.createWorkflowDispatch({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                workflow_id: 'static.yml',
+                ref: 'main'
+              });
+              console.log('Deployment workflow triggered successfully');
+            } catch (error) {
+              console.log('Note: Deployment workflow will be triggered automatically via workflow_run');
+              console.log('Error details:', error.message);
+              // Don't fail the workflow if this step fails - workflow_run will handle it
+            }
 

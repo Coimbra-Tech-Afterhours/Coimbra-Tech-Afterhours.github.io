@@ -7,11 +7,22 @@ on:
       - 'public/events.json'
   workflow_dispatch:
 
+permissions:
+  contents: write
+
+concurrency:
+  group: sitemap-update
+  cancel-in-progress: false
+
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          persist-credentials: true
+
       - name: Ensure sitemap exists (static)
         run: |
           test -f sitemap.xml || cat > sitemap.xml << 'EOF'
@@ -21,13 +32,23 @@ jobs:
             <url><loc>https://coimbratech.org/events</loc></url>
           </urlset>
           EOF
-      - name: Commit
+
+      - name: Commit and push if changed
         run: |
-          if [ -n "$(git status --porcelain)" ]; then
-            git config user.name "github-actions[bot]"
-            git config user.email "github-actions[bot]@users.noreply.github.com"
-            git add sitemap.xml .nojekyll robots.txt
-            git commit -m "chore(seo): ensure sitemap/robots present"
-            git push
+          if [ -z "$(git status --porcelain)" ]; then
+            echo "No changes to commit."
+            exit 0
           fi
+          
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add sitemap.xml .nojekyll robots.txt
+          git commit -m "chore(seo): ensure sitemap/robots present"
+          
+          if ! git push; then
+            echo "Failed to push sitemap changes"
+            exit 1
+          fi
+          
+          echo "Sitemap updated successfully"
 
