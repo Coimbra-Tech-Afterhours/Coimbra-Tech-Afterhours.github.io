@@ -3,10 +3,15 @@
   "version": "1.0.0",
   "description": "Landing page for the Coimbra Tech Afterhours community",
   "type": "module",
+  "engines": {
+    "node": ">=20.0.0",
+    "npm": ">=10.0.0"
+  },
   "scripts": {
     "fetch-events": "node scripts/fetch-events-from-notion.mjs",
     "check-updates": "node scripts/check-notion-updates.mjs",
-    "test-sync": "node scripts/test-sync.mjs"
+    "test-sync": "node scripts/test-sync.mjs",
+    "test-commit-logic": "bash scripts/test-commit-logic.sh"
   },
   "keywords": [
     "coimbra",
