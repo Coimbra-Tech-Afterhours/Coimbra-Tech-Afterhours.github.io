@@ -10,21 +10,29 @@
     <!-- SEO Meta Tags -->
     <title>Eventos — Coimbra Tech Afterhours (Coimbra)</title>
     <meta name="description" content="Agenda de eventos em Coimbra: meetups afterwork da comunidade e de parceiros, com partilha de experiências e conversas reais.">
-    <meta name="keywords" content="Coimbra, tech, tecnologia, startups, afterwork, meetup, eventos, events, Portugal">
+    <meta name="keywords" content="Coimbra, tech, tecnologia, startups, afterwork, meetup, eventos, events, Portugal, tech events Coimbra">
+    <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
     <link rel="canonical" href="https://coimbratech.org/events" />
     
     <!-- Open Graph / Facebook -->
     <meta property="og:type" content="website">
+    <meta property="og:site_name" content="Coimbra Tech Afterhours">
     <meta property="og:title" content="Eventos — Coimbra Tech Afterhours (Coimbra)">
     <meta property="og:description" content="Agenda de eventos em Coimbra: meetups afterwork da comunidade e de parceiros, com partilha de experiências e conversas reais.">
     <meta property="og:url" content="https://coimbratech.org/events">
-    <meta property="og:image" content="https://coimbratech.org/assets/social-card.png">
+    <meta property="og:image" content="https://coimbratech.org/assets/logo-512.png">
+    <meta property="og:image:width" content="512">
+    <meta property="og:image:height" content="512">
+    <meta property="og:image:alt" content="Coimbra Tech Afterhours Logo">
+    <meta property="og:locale" content="pt_PT">
+    <meta property="og:locale:alternate" content="en_US">
     
     <!-- Twitter -->
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="Eventos — Coimbra Tech Afterhours (Coimbra)">
     <meta name="twitter:description" content="Agenda de eventos em Coimbra: meetups afterwork da comunidade e de parceiros, com partilha de experiências e conversas reais.">
-    <meta name="twitter:image" content="https://coimbratech.org/assets/social-card.png">
+    <meta name="twitter:image" content="https://coimbratech.org/assets/logo-512.png">
+    <meta name="twitter:image:alt" content="Coimbra Tech Afterhours Logo">
 
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -43,13 +51,73 @@
     <!-- Styles -->
     <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="assets/css/events.css">
+    
+    <!-- Structured Data for Events Page -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@graph": [
+        {
+          "@type": "BreadcrumbList",
+          "itemListElement": [
+            {
+              "@type": "ListItem",
+              "position": 1,
+              "name": "Home",
+              "item": "https://coimbratech.org/"
+            },
+            {
+              "@type": "ListItem",
+              "position": 2,
+              "name": "Eventos",
+              "item": "https://coimbratech.org/events"
+            }
+          ]
+        },
+        {
+          "@type": "CollectionPage",
+          "@id": "https://coimbratech.org/events#webpage",
+          "url": "https://coimbratech.org/events",
+          "name": "Eventos — Coimbra Tech Afterhours",
+          "description": "Agenda completa de eventos tech em Coimbra: meetups afterwork da comunidade e de parceiros",
+          "isPartOf": {
+            "@id": "https://coimbratech.org/#website"
+          },
+          "about": {
+            "@id": "https://coimbratech.org/#about"
+          },
+          "breadcrumb": {
+            "@id": "https://coimbratech.org/events#breadcrumb"
+          }
+        },
+        {
+          "@type": "Organization",
+          "@id": "https://coimbratech.org/#about",
+          "name": "Coimbra Tech Afterhours",
+          "url": "https://coimbratech.org",
+          "logo": {
+            "@type": "ImageObject",
+            "url": "https://coimbratech.org/assets/logo-512.png",
+            "width": 512,
+            "height": 512
+          }
+        },
+        {
+          "@type": "WebSite",
+          "@id": "https://coimbratech.org/#website",
+          "url": "https://coimbratech.org",
+          "name": "Coimbra Tech Afterhours"
+        }
+      ]
+    }
+    </script>
 </head>
 <body>
     <header>
         <nav>
             <div class="logo-container">
                 <a href="/" style="display: flex; align-items: center; gap: var(--spacing-sm); text-decoration: none;">
-                    <img src="img/logo.png" alt="Coimbra Tech Logo">
+                    <img src="img/logo.png" alt="Coimbra Tech Afterhours Logo" width="40" height="40">
                     <span class="logo-text">Coimbra Tech</span>
                 </a>
             </div>

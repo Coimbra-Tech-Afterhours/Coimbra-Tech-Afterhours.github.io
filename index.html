@@ -10,8 +10,14 @@
     <!-- SEO Meta Tags -->
     <title>Coimbra Tech Afterhours — Comunidade Tech em Coimbra</title>
     <meta name="description" content="Comunidade afterwork que liga profissionais e entusiastas de tecnologia em Coimbra. Encontros informais, partilha de experiências e networking.">
-    <meta name="keywords" content="Coimbra, tech, tecnologia, startups, afterwork, meetup, comunidade, Portugal">
+    <meta name="keywords" content="Coimbra, tech, tecnologia, startups, afterwork, meetup, comunidade, Portugal, tech community, networking Coimbra">
+    <meta name="author" content="Coimbra Tech Afterhours">
+    <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
     <link rel="canonical" href="https://coimbratech.org/" />
+    
+    <!-- Brand Name for Search Results -->
+    <meta name="application-name" content="Coimbra Tech Afterhours">
+    <meta name="apple-mobile-web-app-title" content="Coimbra Tech">
     
     <!-- Open Graph / Facebook -->
     <meta property="og:type" content="website">
@@ -19,13 +25,21 @@
     <meta property="og:title" content="Coimbra Tech Afterhours — Comunidade Tech em Coimbra">
     <meta property="og:description" content="Comunidade afterwork que liga profissionais e entusiastas de tecnologia em Coimbra. Encontros informais, partilha de experiências e networking.">
     <meta property="og:url" content="https://coimbratech.org/">
-    <meta property="og:image" content="https://coimbratech.org/assets/social-card.png">
+    <meta property="og:image" content="https://coimbratech.org/assets/logo-512.png">
+    <meta property="og:image:width" content="512">
+    <meta property="og:image:height" content="512">
+    <meta property="og:image:alt" content="Coimbra Tech Afterhours Logo">
+    <meta property="og:locale" content="pt_PT">
+    <meta property="og:locale:alternate" content="en_US">
     
     <!-- Twitter -->
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="Coimbra Tech Afterhours — Comunidade Tech em Coimbra">
     <meta name="twitter:description" content="Comunidade afterwork que liga profissionais e entusiastas de tecnologia em Coimbra. Encontros informais, partilha de experiências e networking.">
-    <meta name="twitter:image" content="https://coimbratech.org/assets/social-card.png">
+    <meta name="twitter:image" content="https://coimbratech.org/assets/logo-512.png">
+    <meta name="twitter:image:alt" content="Coimbra Tech Afterhours Logo">
+    <meta name="twitter:site" content="@coimbratech">
+    <meta name="twitter:creator" content="@coimbratech">
 
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -42,17 +56,111 @@
     <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="assets/css/events.css">
 
-    <!-- Organization JSON-LD -->
+    <!-- Enhanced Structured Data for SEO and AI Overview -->
     <script type="application/ld+json">
     {
       "@context": "https://schema.org",
-      "@type": "Organization",
-      "name": "Coimbra Tech Afterhours",
-      "url": "https://coimbratech.org",
-      "logo": "https://coimbratech.org/assets/logo-512.png",
-      "sameAs": [
-        "https://github.com/Coimbra-Tech-Afterhours",
-        "https://www.linkedin.com/company/coimbra-tech-afterhours"
+      "@graph": [
+        {
+          "@type": "Organization",
+          "@id": "https://coimbratech.org/#about",
+          "name": "Coimbra Tech Afterhours",
+          "alternateName": "Coimbra Tech",
+          "url": "https://coimbratech.org",
+          "logo": {
+            "@type": "ImageObject",
+            "url": "https://coimbratech.org/assets/logo-512.png",
+            "width": 512,
+            "height": 512
+          },
+          "image": "https://coimbratech.org/assets/logo-512.png",
+          "description": "Comunidade afterwork que liga profissionais e entusiastas de tecnologia em Coimbra. Encontros informais, partilha de experiências e networking autêntico.",
+          "foundingDate": "2025",
+          "address": {
+            "@type": "PostalAddress",
+            "addressLocality": "Coimbra",
+            "addressRegion": "Coimbra",
+            "addressCountry": "PT"
+          },
+          "contactPoint": {
+            "@type": "ContactPoint",
+            "email": "afterhours@coimbratech.org",
+            "contactType": "Community Support",
+            "availableLanguage": ["Portuguese", "English"]
+          },
+          "sameAs": [
+            "https://github.com/Coimbra-Tech-Afterhours",
+            "https://www.linkedin.com/company/coimbra-tech-afterhours"
+          ],
+          "potentialAction": {
+            "@type": "JoinAction",
+            "target": {
+              "@type": "EntryPoint",
+              "urlTemplate": "https://coimbra-tech-afterhours.notion.site/2a55a6053b688019abe2cfb5ca91b6ee",
+              "actionPlatform": [
+                "http://schema.org/DesktopWebPlatform",
+                "http://schema.org/MobileWebPlatform"
+              ]
+            },
+            "name": "Join the Community"
+          }
+        },
+        {
+          "@type": "WebSite",
+          "@id": "https://coimbratech.org/#website",
+          "url": "https://coimbratech.org",
+          "name": "Coimbra Tech Afterhours",
+          "description": "Comunidade afterwork de tecnologia em Coimbra",
+          "publisher": {
+            "@id": "https://coimbratech.org/#about"
+          },
+          "inLanguage": ["pt-PT", "en"],
+          "potentialAction": {
+            "@type": "SearchAction",
+            "target": {
+              "@type": "EntryPoint",
+              "urlTemplate": "https://coimbratech.org/events"
+            },
+            "query-input": "required name=search_term_string"
+          }
+        },
+        {
+          "@type": "FAQPage",
+          "mainEntity": [
+            {
+              "@type": "Question",
+              "name": "O que é o Coimbra Tech Afterhours?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "O Coimbra Tech Afterhours é uma comunidade local que liga profissionais e entusiastas de tecnologia fora do horário de trabalho. Organizamos encontros informais após o trabalho para partilhar experiências, aprender e fortalecer o ecossistema tecnológico de Coimbra."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "Como posso participar?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Para participar, preenche o formulário de inscrição, junta-te ao grupo WhatsApp para receberes atualizações, e confirma a tua presença nos eventos através dos links de RSVP."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "Que tipo de eventos organizam?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Organizamos eventos afterwork da comunidade e eventos de parceiros, incluindo meetups, conversas informais, workshops e oportunidades de networking em Coimbra."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "Os eventos são gratuitos?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Sim, todos os eventos são gratuitos e abertos à comunidade tech de Coimbra."
+              }
+            }
+          ]
+        }
       ]
     }
     </script>
@@ -62,7 +170,7 @@
         <nav>
             <div class="logo-container">
                 <a href="/" style="display: flex; align-items: center; gap: var(--spacing-sm); text-decoration: none;">
-                    <img src="img/logo.png" alt="Coimbra Tech Logo">
+                    <img src="img/logo.png" alt="Coimbra Tech Afterhours Logo" width="40" height="40">
                     <span class="logo-text">Coimbra Tech</span>
                 </a>
             </div>
@@ -135,7 +243,7 @@
     <main>
         <!-- Hero Section -->
         <section id="hero">
-            <img src="img/logo.png" alt="Coimbra Tech Afterhours Logo" class="hero-logo">
+            <img src="img/logo.png" alt="Coimbra Tech Afterhours Logo" class="hero-logo" width="120" height="120">
         <h1>Coimbra Tech Afterhours</h1>
             <div data-lang="pt" class="active">
                 <p class="hero-subtitle">Comunidade <em>afterwork</em> que reúne pessoas ligadas a tecnologia, produto e <em>startups</em> em Coimbra.</p>
