@@ -381,7 +381,7 @@
   /* Align meta items consistently across rows - fixed column widths */
   .event-row__meta {
     display: grid;
-    grid-template-columns: 160px 160px 80px;
+    grid-template-columns: 160px 80px;
     gap: 10px 16px;
     align-items: center;
     color: var(--muted);

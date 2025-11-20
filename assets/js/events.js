@@ -15,7 +15,6 @@
   // i18n strings
   const i18n = {
     pt: {
-      venueTBA: 'Local a anunciar',
       noUpcoming: 'Ainda não há eventos marcados. Junta-te ao WhatsApp para saber quando abrirem novas datas.',
       noPast: 'Ainda sem arquivo',
       details: 'Ver detalhes / RSVP',
@@ -25,7 +24,6 @@
       organizerCTAButton: 'Contactar'
     },
     en: {
-      venueTBA: 'Venue TBA',
       noUpcoming: 'No upcoming events right now. Join the WhatsApp group to stay tuned.',
       noPast: 'No past events yet',
       details: 'View details / RSVP',
@@ -79,8 +77,6 @@
       dateISO: event.Date || '',
       datePretty: event.datePretty || '',
       lang: Array.isArray(event.Language) ? event.Language : [],
-      venueName: firstOrNull(event['Place Name']),
-      venueLink: firstOrNull(event['Place Link']),
       link: event.Link || null
     };
   }
@@ -122,7 +118,6 @@
    */
   const icons = {
     calendar: '<svg aria-hidden="true" class="icon icon--calendar" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>',
-    pin: '<svg aria-hidden="true" class="icon icon--pin" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>',
     globe: '<svg aria-hidden="true" class="icon icon--globe" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="2" y1="12" x2="22" y2="12"></line><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path></svg>',
     chat: '<svg aria-hidden="true" class="icon icon--chat" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>'
   };
@@ -142,12 +137,6 @@
     const dateHTML = event.dateISO
       ? `<time datetime="${event.dateISO}">${event.datePretty}</time>`
       : event.datePretty;
-
-    const venueHTML = event.venueName
-      ? event.venueLink
-        ? `<a href="${event.venueLink}" target="_blank" rel="noopener noreferrer">${event.venueName}</a>`
-        : event.venueName
-      : `<span data-i18n-pt="${t.venueTBA}" data-i18n-en="${i18n.en.venueTBA}">${t.venueTBA}</span>`;
 
     const languagesHTML = languages || '';
 
@@ -169,10 +158,6 @@
           <span class="meta">
             ${icons.calendar}
             ${dateHTML}
-          </span>
-          <span class="meta">
-            ${icons.pin}
-            ${venueHTML}
           </span>
           ${languagesHTML ? `<span class="meta">${icons.globe}${languagesHTML}</span>` : ''}
         </div>
@@ -300,7 +285,7 @@
       "startDate": ev.dateISO || ev.date || "",
       "location": {
         "@type": "Place",
-        "name": ev.venueName || ev.venue || "Venue TBA",
+        "name": "Coimbra",
         "address": {
           "@type": "PostalAddress",
           "addressLocality": "Coimbra",
@@ -380,6 +365,7 @@
         pastContainer.innerHTML = `<p class="events__empty" data-i18n-pt="${t.noPast}" data-i18n-en="${i18n.en.noPast}">${t.noPast}</p>`;
       } else {
         const groups = groupByYearMonth(past);
+        // Sort month groups: newest first (reverse chronological)
         Object.keys(groups).sort().reverse().forEach(groupKey => {
           const groupDiv = document.createElement('div');
           groupDiv.className = 'archive__group';

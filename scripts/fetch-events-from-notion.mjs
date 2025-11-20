@@ -176,6 +176,8 @@ function mapEvent(page, debug = false) {
   // Properties to exclude from the output
   const excludedProperties = [
     'Location', // Relation to places database (we use Place lookup instead)
+    'Place Name', // Venue name - not displayed on site (location provided in event details)
+    'Place Link', // Venue link - not displayed on site (location provided in event details)
     'Visible on site', // Filter property, not needed in output
   ];
 

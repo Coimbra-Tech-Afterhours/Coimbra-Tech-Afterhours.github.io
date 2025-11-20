@@ -103,13 +103,14 @@ The site can display events from a Notion database. To set this up:
    - Create a database in Notion with the following properties:
      - `Name` (Title)
      - `Date` (Date)
-     - `Place` (URL - Google Maps link)
      - `Type` (Select: Afterhours/Partner Event/Workshop)
      - `Visible on site` (Checkbox)
      - `Status` (Select: Past/Upcoming/Draft)
      - `Link` (URL - optional, for event registration/details)
+     - `Language` (Multi-select - optional, e.g., PT, EN)
    - Share the database with your integration
    - Copy the database ID from the URL
+   - **Note:** Location/venue information is not displayed on the site (provided in event details pages instead)
 
 3. **Run the fetch script:**
 
@@ -137,7 +138,7 @@ The site displays events from a Notion database that are automatically synced to
 
 #### Data Flow
 
-1. **Notion Database** → Events are managed in a Notion database with properties like `Name`, `Date`, `Status`, `Type`, `Place Name`, `Place Link`, `Link`, `Language`, etc.
+1. **Notion Database** → Events are managed in a Notion database with properties like `Name`, `Date`, `Status`, `Type`, `Link`, `Language`, etc.
 2. **GitHub Action (Sync)** → Runs hourly (UTC) and on manual trigger to fetch events from Notion API
 3. **Static JSON** → Events are written to `public/events.json` and committed to the repository
 4. **GitHub Action (Deploy)** → Automatically triggered after sync completes to deploy updated content to GitHub Pages
