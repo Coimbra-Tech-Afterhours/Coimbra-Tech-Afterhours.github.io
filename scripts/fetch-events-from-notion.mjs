@@ -2,16 +2,26 @@
 
 /**
  * Fetches events from Notion Events database and writes them to a static JSON file.
+ * Also automatically updates event Status in Notion (Upcoming → Past) based on date.
  * 
  * This script is meant to be run locally or in a GitHub Action.
  * The frontend should only ever see the generated events.json file.
+ * 
+ * Features:
+ * - Automatically updates Status in Notion database (replaces Notion automation)
+ * - Excludes Place data (Place Name, Place Link) for security (secret locations)
+ * - Only fetches events marked as "Visible on site"
  * 
  * Usage:
  *   1. Set environment variables:
  *      - NOTION_API_KEY: Your Notion integration API key
  *      - NOTION_EVENTS_DATABASE_ID: The ID of your Events database
  *   2. Run: node scripts/fetch-events-from-notion.mjs
- *   3. The script will create/update public/events.json
+ *   3. The script will:
+ *      - Update Status in Notion for past events
+ *      - Create/update public/events.json
+ * 
+ * Note: The Notion integration must have write access to update Status.
  */
 
 import { Client } from "@notionhq/client";
@@ -191,8 +201,11 @@ function mapEvent(page, debug = false) {
 
   // Extract all properties generically, excluding specified ones
   Object.keys(props).forEach((key) => {
-    // Skip excluded properties
+    // Skip excluded properties (including Place data for security - secret locations)
     if (excludedProperties.includes(key)) {
+      if (debug) {
+        console.log(`   ⏭️  Skipping excluded property: "${key}"`);
+      }
       return;
     }
 
@@ -202,6 +215,11 @@ function mapEvent(page, debug = false) {
       event[key] = value;
     }
   });
+  
+  // Double-check: Ensure Place data is never included (security measure)
+  delete event['Place Name'];
+  delete event['Place Link'];
+  delete event['Place'];
 
   // Add pretty date formatting if Date property exists
   if (event.Date) {
@@ -211,6 +229,7 @@ function mapEvent(page, debug = false) {
   if (!event.datePretty && event.date) {
     event.datePretty = formatDatePretty(event.date);
   }
+
 
   return event;
 }
@@ -255,6 +274,106 @@ async function getDatabaseLastEditedTime() {
 }
 
 /**
+ * Updates event Status in Notion database based on date
+ * Since Notion free plan can't automate, we do it here via GitHub Actions
+ */
+async function updateEventStatusesInNotion() {
+  try {
+    console.log("🔄 Checking for events that need status updates...");
+
+    // Query for events marked as "Upcoming" that are visible on site
+    // Fetch all pages (handle pagination)
+    let allPages = [];
+    let hasMore = true;
+    let startCursor = undefined;
+
+    while (hasMore) {
+      const response = await notion.databases.query({
+        database_id: NOTION_EVENTS_DATABASE_ID,
+        filter: {
+          and: [
+            {
+              property: "Visible on site",
+              checkbox: {
+                equals: true,
+              },
+            },
+            {
+              property: "Status",
+              status: {
+                equals: "Upcoming",
+              },
+            },
+          ],
+        },
+        start_cursor: startCursor,
+      });
+
+      allPages = allPages.concat(response.results);
+      hasMore = response.has_more;
+      startCursor = response.next_cursor;
+    }
+
+    const now = new Date();
+    now.setHours(0, 0, 0, 0); // Set to start of day for fair comparison
+
+    let updatedCount = 0;
+    const updatePromises = [];
+
+    for (const page of allPages) {
+      const dateProp = page.properties.Date || page.properties.date;
+      if (!dateProp || dateProp.type !== "date" || !dateProp.date) {
+        continue;
+      }
+
+      const eventDate = new Date(dateProp.date.start);
+      eventDate.setHours(0, 0, 0, 0);
+
+      // If event date is in the past, update Status to "Past" in Notion
+      if (eventDate < now) {
+        const eventName = page.properties.Name?.title?.[0]?.plain_text || page.properties.name?.title?.[0]?.plain_text || "Unknown";
+        console.log(`   📅 Updating "${eventName}" (${dateProp.date.start}) from Upcoming → Past`);
+
+        updatePromises.push(
+          notion.pages.update({
+            page_id: page.id,
+            properties: {
+              Status: {
+                status: {
+                  name: "Past",
+                },
+              },
+            },
+          })
+            .then(() => {
+              updatedCount++;
+              return true;
+            })
+            .catch((error) => {
+              console.error(`   ❌ Failed to update page ${page.id}:`, error.message);
+              return false;
+            })
+        );
+      }
+    }
+
+    // Wait for all updates to complete
+    if (updatePromises.length > 0) {
+      await Promise.all(updatePromises);
+      console.log(`✅ Updated Status to "Past" for ${updatedCount} event(s) in Notion`);
+    } else {
+      console.log("✅ No events need status updates");
+    }
+
+    return updatedCount > 0;
+  } catch (error) {
+    console.error("❌ Error updating event statuses in Notion:", error.message);
+    // Don't fail the entire sync if status updates fail
+    return false;
+  }
+}
+
+/**
  * Computes a hash of the events array for comparison
  */
 function computeEventsHash(events) {
@@ -285,6 +404,16 @@ async function getExistingEventsHash() {
 async function fetchAndWriteEvents() {
   try {
     console.log("🔄 Fetching events from Notion...");
+
+    // First, update any event statuses in Notion that need updating
+    // This ensures the database stays in sync (replaces Notion automation)
+    const statusUpdated = await updateEventStatusesInNotion();
+    
+    // If we updated statuses, wait a moment for Notion to process
+    if (statusUpdated) {
+      console.log("⏳ Waiting for Notion to process status updates...");
+      await new Promise(resolve => setTimeout(resolve, 1000)); // 1 second delay
+    }
 
     // Get database last edited time for timestamp tracking
     const databaseLastEdited = await getDatabaseLastEditedTime();
