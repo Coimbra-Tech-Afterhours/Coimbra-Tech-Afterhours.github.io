@@ -105,12 +105,13 @@ The site can display events from a Notion database. To set this up:
      - `Date` (Date)
      - `Type` (Select: Afterhours/Partner Event/Workshop)
      - `Visible on site` (Checkbox)
-     - `Status` (Select: Past/Upcoming/Draft)
+     - `Status` (Status: Past/Upcoming/Draft)
      - `Link` (URL - optional, for event registration/details)
      - `Language` (Multi-select - optional, e.g., PT, EN)
-   - Share the database with your integration
+   - Share the database with your integration **with edit access** (required for automatic Status updates)
    - Copy the database ID from the URL
    - **Note:** Location/venue information is not displayed on the site (provided in event details pages instead)
+   - **Automatic Status Updates:** The GitHub Action automatically updates Status from "Upcoming" to "Past" when event dates pass (replaces Notion automation for free plan users)
 
 3. **Run the fetch script:**
 
@@ -139,7 +140,10 @@ The site displays events from a Notion database that are automatically synced to
 #### Data Flow
 
 1. **Notion Database** → Events are managed in a Notion database with properties like `Name`, `Date`, `Status`, `Type`, `Link`, `Language`, etc.
-2. **GitHub Action (Sync)** → Runs hourly (UTC) and on manual trigger to fetch events from Notion API
+2. **GitHub Action (Sync)** → Runs hourly (UTC), daily at midnight (UTC), and on manual trigger to:
+   - Automatically update Status from "Upcoming" to "Past" when event dates pass (replaces Notion automation)
+   - Fetch events from Notion API
+   - Exclude Place data (Place Name, Place Link) for security (secret locations)
 3. **Static JSON** → Events are written to `public/events.json` and committed to the repository
 4. **GitHub Action (Deploy)** → Automatically triggered after sync completes to deploy updated content to GitHub Pages
 5. **Frontend** → The homepage and `/events` page fetch and render events from the JSON file
@@ -149,9 +153,11 @@ The site displays events from a Notion database that are automatically synced to
 The repository uses three GitHub Actions workflows:
 
 1. **`sync-notion.yml`** — Syncs events from Notion
-   - Runs hourly (UTC) via cron schedule
+   - Runs hourly (UTC) and daily at midnight (UTC) via cron schedule
    - Can be triggered manually via `workflow_dispatch`
+   - Automatically updates Status in Notion (Upcoming → Past) when event dates pass
    - Fetches events from Notion API
+   - Excludes Place data (Place Name, Place Link) for security
    - Commits changes to `public/events.json`
    - Automatically triggers deployment workflow
 
@@ -196,12 +202,12 @@ The `public/events.json` file contains an array of event objects with the follow
 - `Name` (string) - Event name/title
 - `Date` (string) - ISO 8601 date string
 - `datePretty` (string) - Human-readable date (e.g., "6 Nov 2025 18:30")
-- `Status` (string) - "Upcoming" or "Past"
+- `Status` (string) - "Upcoming" or "Past" (automatically updated when dates pass)
 - `Type` (string) - Event type (e.g., "Afterhours", "Partner Event")
 - `Language` (array) - Array of language codes (e.g., ["PT", "EN"])
-- `Place Name` (array) - Array with venue name (first element used)
-- `Place Link` (array) - Array with Google Maps URL (first element used)
 - `Link` (string, optional) - RSVP or details URL
+
+**Note:** Place data (Place Name, Place Link) is **not** included in the JSON file for security reasons (secret locations). Location/venue information is provided on event details pages instead.
 
 #### Customization
 
@@ -226,9 +232,11 @@ The `public/events.json` file contains an array of event objects with the follow
 - Edit `assets/css/events.css` to modify event card appearance
 - All styles use CSS variables from `styles.css` for consistency
 
-#### Security Note
+#### Security Notes
 
-**Important:** Secrets (Notion API keys) are stored in GitHub Actions secrets and are **never** exposed to the frontend. The frontend only accesses the public `events.json` file, which contains no sensitive information.
+**API Keys:** Secrets (Notion API keys) are stored in GitHub Actions secrets and are **never** exposed to the frontend. The frontend only accesses the public `events.json` file, which contains no sensitive information.
+
+**Place Data:** Place/location data (Place Name, Place Link) is excluded from the JSON file to protect secret locations. The fetch script explicitly excludes and deletes Place properties to ensure they never appear in the generated JSON, even if property names change.
 
 #### Events UI
 
