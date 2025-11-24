@@ -13,7 +13,8 @@ name: Sync from Notion
 
 on:
   schedule:
-    - cron: "0 * * * *"   # hourly, UTC
+    - cron: "0 * * * *"   # hourly, UTC (checks for updates)
+    - cron: "0 0 * * *"   # daily at midnight UTC (ensures date-based status updates)
   workflow_dispatch:
 
 permissions:
