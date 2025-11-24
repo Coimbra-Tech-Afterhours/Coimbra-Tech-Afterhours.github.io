@@ -2,16 +2,10 @@
   {
     "Status": "Past",
     "Link": "https://www.impostor.pm/club/coimbra",
-    "Place Name": [
-      "Framedrop"
-    ],
     "Type": "Partner Event",
     "Date": "2025-10-07T18:30:00.000+01:00",
     "Language": [
       "PT"
-    ],
-    "Place Link": [
-      "https://maps.app.goo.gl/X6Dhfqq9Toc2NhaF7"
     ],
     "Name": "The Impostor PM Coimbra #7",
     "datePretty": "7 Oct 2025 17:30"
@@ -19,16 +13,10 @@
   {
     "Status": "Past",
     "Link": "https://www.meetup.com/leadcraft-the-engineering-managers-community/events/311522494/",
-    "Place Name": [
-      "Nest Collective"
-    ],
     "Type": "Partner Event",
     "Date": "2025-10-23",
     "Language": [
       "PT"
-    ],
-    "Place Link": [
-      "https://maps.app.goo.gl/zeaD7Pd9mRou4Bpr5"
     ],
     "Name": "Engineering Managers Meetup - Coimbra",
     "datePretty": "23 Oct 2025 00:00"
@@ -36,17 +24,11 @@
   {
     "Status": "Past",
     "Link": "https://citysocializer.com/socials/372656e6-5ec0-44d6-b06c-704e1b033cfd",
-    "Place Name": [
-      "Praxis"
-    ],
     "Type": "Afterhours",
     "Date": "2025-11-06T18:30:00.000+00:00",
     "Language": [
       "PT",
       "EN"
-    ],
-    "Place Link": [
-      "https://maps.app.goo.gl/4EneRxTMMFghs94G8"
     ],
     "Name": "Coimbra Tech Afterhours #01",
     "datePretty": "6 Nov 2025 18:30"
@@ -54,35 +36,23 @@
   {
     "Status": "Past",
     "Link": "https://impostor.pm/club/coimbra",
-    "Place Name": [
-      "jeKnowledge"
-    ],
     "Type": "Partner Event",
     "Date": "2025-11-18T18:30:00.000+00:00",
     "Language": [
       "PT",
       "EN"
     ],
-    "Place Link": [
-      "https://maps.app.goo.gl/H8sa7BvQphoiia4J6"
-    ],
     "Name": "The Impostor PM Coimbra #8",
     "datePretty": "18 Nov 2025 18:30"
   },
   {
-    "Status": "Upcoming",
+    "Status": "Past",
     "Link": "https://luma.com/1v8v9or8?tk=nuZDRa",
-    "Place Name": [
-      "Pink Room"
-    ],
     "Type": "Partner Event",
     "Date": "2025-11-20T18:45:00.000+00:00",
     "Language": [
       "PT",
       "EN"
-    ],
-    "Place Link": [
-      "https://maps.app.goo.gl/X6Dhfqq9Toc2NhaF7"
     ],
     "Name": "Coimbra JS - Mobile November",
     "datePretty": "20 Nov 2025 18:45"
@@ -90,14 +60,12 @@
   {
     "Status": "Upcoming",
     "Link": "https://luma.com/tg0qv05x",
-    "Place Name": [],
     "Type": "Afterhours",
     "Date": "2025-12-02T18:30:00.000+00:00",
     "Language": [
       "PT",
       "EN"
     ],
-    "Place Link": [],
     "Name": "Coimbra Tech Afterhours #02",
     "datePretty": "2 Dec 2025 18:30"
   }
