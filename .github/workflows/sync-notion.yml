@@ -19,7 +19,7 @@ on:
 
 permissions:
   contents: write
-  actions: read
+  actions: write  # Required to trigger other workflows via workflow_dispatch
 
 concurrency:
   group: sync-notion
@@ -143,7 +143,7 @@ jobs:
         with:
           script: |
             // Trigger the deployment workflow via workflow_dispatch
-            // This ensures the deployment runs even if push event doesn't trigger it
+            // This ensures the deployment runs immediately after sync completes
             try {
               await github.rest.actions.createWorkflowDispatch({
                 owner: context.repo.owner,
@@ -151,10 +151,11 @@ jobs:
                 workflow_id: 'static.yml',
                 ref: 'main'
               });
-              console.log('Deployment workflow triggered successfully');
+              console.log('✅ Deployment workflow triggered successfully');
             } catch (error) {
-              console.log('Note: Deployment workflow will be triggered automatically via workflow_run');
-              console.log('Error details:', error.message);
-              // Don't fail the workflow if this step fails - workflow_run will handle it
+              console.error('❌ Failed to trigger deployment workflow:', error.message);
+              // Fail the step if we can't trigger deployment
+              // This ensures we know if deployment isn't happening
+              throw error;
             }
 
