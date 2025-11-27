@@ -617,7 +617,7 @@
 
     <footer>
         <div class="footer-content">
-            <p class="footer-text">© 2025 Coimbra Tech Afterhours · Made in Coimbra, of course.</p>
+            <p class="footer-text">© <span id="copyright-year">2025</span> · Coimbra Tech Afterhours · <strong>Made in Coimbra</strong>, of course.</p>
             <a href="https://coimbra-tech-afterhours.notion.site/Coimbra-Tech-Afterhours-Code-of-Conduct-2a45a6053b68802d9940f50459a0c409" class="footer-link" target="_blank" rel="noopener noreferrer external" data-lang="pt" style="display: none;">Código de Conduta</a>
             <a href="https://coimbra-tech-afterhours.notion.site/Coimbra-Tech-Afterhours-Code-of-Conduct-2a45a6053b68802d9940f50459a0c409" class="footer-link" target="_blank" rel="noopener noreferrer external" data-lang="en" style="display: none;">Code of Conduct</a>
         </div>
@@ -716,6 +716,84 @@
             document.querySelectorAll('.theme-toggle span[data-lang]').forEach(span => {
                 span.classList.toggle('active', span.getAttribute('data-lang') === savedLang);
             });
+            
+            // Update copyright year dynamically
+            const copyrightYearElement = document.getElementById('copyright-year');
+            if (copyrightYearElement) {
+                async function updateCopyrightYear() {
+                    let foundingYear = null;
+                    
+                    // Try to get latest year from events.json (most recent event year)
+                    // This shows how far into the future the organization is active
+                    let latestEventYear = null;
+                    const possiblePaths = ['/public/events.json', './public/events.json', 'public/events.json'];
+                    for (const path of possiblePaths) {
+                        try {
+                            const response = await fetch(path);
+                            if (response.ok) {
+                                const events = await response.json();
+                                if (events && events.length > 0) {
+                                    const years = events
+                                        .map(event => {
+                                            if (event.Date) {
+                                                const date = new Date(event.Date);
+                                                return date.getFullYear();
+                                            }
+                                            return null;
+                                        })
+                                        .filter(year => year !== null);
+                                    
+                                    if (years.length > 0) {
+                                        latestEventYear = Math.max(...years);
+                                        console.log(`[Copyright Year] Found latest event year ${latestEventYear} from events.json (path: ${path})`);
+                                        break; // Success, exit loop
+                                    }
+                                }
+                            }
+                        } catch (error) {
+                            // Try next path
+                            continue;
+                        }
+                    }
+                    
+                    // Fallback to foundingDate from structured data
+                    if (!foundingYear) {
+                        try {
+                            const structuredData = document.querySelector('script[type="application/ld+json"]');
+                            if (structuredData) {
+                                const data = JSON.parse(structuredData.textContent);
+                                const org = data['@graph']?.find(item => item['@type'] === 'Organization');
+                                if (org?.foundingDate) {
+                                    foundingYear = parseInt(org.foundingDate);
+                                    console.log(`[Copyright Year] Using founding year ${foundingYear} from structured data`);
+                                }
+                            }
+                        } catch (error) {
+                            // Use default
+                        }
+                    }
+                    
+                    // Final fallback
+                    if (!foundingYear) {
+                        foundingYear = 2025;
+                        console.log(`[Copyright Year] Using default founding year ${foundingYear}`);
+                    }
+                    
+                    const currentYear = new Date().getFullYear();
+                    // Use the latest of: current year or latest event year
+                    const displayYear = latestEventYear && latestEventYear > currentYear 
+                        ? latestEventYear 
+                        : currentYear;
+                    
+                    const copyrightText = displayYear > foundingYear 
+                        ? `${foundingYear}-${displayYear}` 
+                        : foundingYear.toString();
+                    copyrightYearElement.textContent = copyrightText;
+                    console.log(`[Copyright Year] Set copyright to: © ${copyrightText} (founding: ${foundingYear}, current: ${currentYear}, latest event: ${latestEventYear || 'N/A'})`);
+                }
+                
+                updateCopyrightYear();
+            }
         });
 
         // Smooth scroll for anchor links
