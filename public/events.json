@@ -56,7 +56,7 @@
     "datePretty": "20 Nov 2025 18:45"
   },
   {
-    "Status": "Upcoming",
+    "Status": "Past",
     "Link": "https://luma.com/tg0qv05x",
     "Type": "Afterhours",
     "Date": "2025-12-02T18:30:00.000+00:00",
@@ -68,14 +68,39 @@
     "datePretty": "2 Dec 2025 18:30"
   },
   {
-    "Status": "Upcoming",
+    "Status": "Past",
     "Link": "https://impostor.pm/club/coimbra",
     "Type": "Partner Event",
     "Date": "2025-12-11T18:30:00.000+00:00",
     "Language": [
-      "PT"
+      "PT",
+      "EN"
     ],
     "Name": "The Impostor PM Coimbra #9",
     "datePretty": "11 Dec 2025 18:30"
+  },
+  {
+    "Status": "Past",
+    "Link": "https://luma.com/ii0pywrp",
+    "Type": "Afterhours",
+    "Date": "2026-01-20T18:30:00.000+00:00",
+    "Language": [
+      "PT",
+      "EN"
+    ],
+    "Name": "Coimbra Tech Afterhours #03",
+    "datePretty": "20 Jan 2026 18:30"
+  },
+  {
+    "Status": "Past",
+    "Link": "https://impostor.pm/club/coimbra",
+    "Type": "Partner Event",
+    "Date": "2026-01-29T18:30:00.000+00:00",
+    "Language": [
+      "PT",
+      "EN"
+    ],
+    "Name": "The Impostor PM Coimbra #10",
+    "datePretty": "29 Jan 2026 18:30"
   }
 ]
