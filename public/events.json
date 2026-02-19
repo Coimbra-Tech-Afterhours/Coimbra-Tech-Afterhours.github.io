@@ -117,14 +117,14 @@
   },
   {
     "Status": "Upcoming",
-    "Link": "luma.com/2q4yfskv",
+    "Link": "https://luma.com/2q4yfskv",
     "Type": "Partner Event",
-    "Date": "2026-02-24",
+    "Date": "2026-02-24T18:45:00.000+00:00",
     "Language": [
       "PT",
       "EN"
     ],
     "Name": "Coimbra JS - February",
-    "datePretty": "24 Feb 2026 00:00"
+    "datePretty": "24 Feb 2026 18:45"
   }
 ]
