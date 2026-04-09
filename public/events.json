@@ -136,7 +136,67 @@
       "PT",
       "EN"
     ],
-    "Name": "Coimbra Tech Afterhours #04",
+    "Name": "Coimbra Tech Afterhours #04 (1)",
     "datePretty": "17 Mar 2026 18:30"
+  },
+  {
+    "Status": "Upcoming",
+    "Link": "https://luma.com/ygv9e2xb",
+    "Type": "Afterhours",
+    "Date": "2026-04-15T18:30:00.000+01:00",
+    "Language": [
+      "PT",
+      "EN"
+    ],
+    "Name": "Coimbra Tech Afterhours #05",
+    "datePretty": "15 Apr 2026 17:30"
+  },
+  {
+    "Status": "Upcoming",
+    "Link": "https://luma.com/bu6w1amr",
+    "Type": "Partner Event",
+    "Date": "2026-04-17T18:00:00.000+01:00",
+    "Language": [
+      "PT",
+      "EN"
+    ],
+    "Name": "AI in Tech Companies: tales of the Coimbra ecosystem",
+    "datePretty": "17 Apr 2026 17:00"
+  },
+  {
+    "Status": "Upcoming",
+    "Link": "https://luma.com/6z95zzja",
+    "Type": "Partner Event",
+    "Date": "2026-04-23T18:00:00.000+01:00",
+    "Language": [
+      "PT",
+      "EN"
+    ],
+    "Name": "Coimbra JS - April",
+    "datePretty": "23 Apr 2026 17:00"
+  },
+  {
+    "Status": "Upcoming",
+    "Link": "https://luma.com/eyhh2wlt",
+    "Type": "Partner Event",
+    "Date": "2026-04-24T09:00:00.000+01:00",
+    "Language": [
+      "PT",
+      "EN"
+    ],
+    "Name": "Starbase Co-work: Open co-working day with great food, coffee and top notch community leaders and builders.",
+    "datePretty": "24 Apr 2026 08:00"
+  },
+  {
+    "Status": "Upcoming",
+    "Link": "https://luma.com/ip3g8e0t?tk=DLjAAR",
+    "Type": "Partner Event",
+    "Date": "2026-04-24T18:00:00.000+01:00",
+    "Language": [
+      "PT",
+      "EN"
+    ],
+    "Name": "Starbase Deep Space - How AI is transforming Fintech",
+    "datePretty": "24 Apr 2026 17:00"
   }
 ]
