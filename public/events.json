@@ -165,6 +165,18 @@
   },
   {
     "Status": "Upcoming",
+    "Link": "https://impostor.pm/club/coimbra",
+    "Type": "Partner Event",
+    "Date": "2026-04-21T18:30:00.000+01:00",
+    "Language": [
+      "PT",
+      "EN"
+    ],
+    "Name": "The Impostor PM Coimbra #11",
+    "datePretty": "21 Apr 2026 17:30"
+  },
+  {
+    "Status": "Upcoming",
     "Link": "https://luma.com/6z95zzja",
     "Type": "Partner Event",
     "Date": "2026-04-23T18:00:00.000+01:00",
