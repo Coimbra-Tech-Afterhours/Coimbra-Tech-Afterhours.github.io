@@ -210,5 +210,17 @@
     ],
     "Name": "Starbase Deep Space - How AI is transforming Fintech",
     "datePretty": "24 Apr 2026 17:00"
+  },
+  {
+    "Status": "Upcoming",
+    "Link": "https://impostor.pm/club/coimbra",
+    "Type": "Partner Event",
+    "Date": "2026-05-19T18:30:00.000+01:00",
+    "Language": [
+      "PT",
+      "EN"
+    ],
+    "Name": "The Impostor PM Coimbra #12",
+    "datePretty": "19 May 2026 17:30"
   }
 ]
