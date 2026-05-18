@@ -213,6 +213,18 @@
   },
   {
     "Status": "Upcoming",
+    "Link": "https://gdg.community.dev/events/details/google-gdg-coimbra-presents-google-io-extended-2026-watch-party/",
+    "Type": "Partner Event",
+    "Date": "2026-05-19T18:00:00.000+01:00",
+    "Language": [
+      "PT",
+      "EN"
+    ],
+    "Name": "Google I/O Extended 2026 Watch Party",
+    "datePretty": "19 May 2026 17:00"
+  },
+  {
+    "Status": "Upcoming",
     "Link": "https://impostor.pm/club/coimbra",
     "Type": "Partner Event",
     "Date": "2026-05-19T18:30:00.000+01:00",
