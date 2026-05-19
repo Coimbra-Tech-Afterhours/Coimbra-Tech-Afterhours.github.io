@@ -153,6 +153,17 @@
   },
   {
     "Status": "Past",
+    "Link": "https://www.ai-nest.org/?event=ai-in-tech-companies",
+    "Type": "Partner Event",
+    "Date": "2026-04-17T17:00:00.000+01:00",
+    "Language": [
+      "PT"
+    ],
+    "Name": "AI NEST #1 - AI in Tech Companies",
+    "datePretty": "17 Apr 2026 16:00"
+  },
+  {
+    "Status": "Past",
     "Link": "https://luma.com/bu6w1amr",
     "Type": "Partner Event",
     "Date": "2026-04-17T18:00:00.000+01:00",
@@ -237,14 +248,36 @@
   },
   {
     "Status": "Upcoming",
+    "Link": "https://luma.com/8j2dgq3j",
+    "Type": "Partner Event",
+    "Date": "2026-05-20T18:00:00.000+01:00",
+    "Language": [
+      "PT"
+    ],
+    "Name": "Coimbra Founders Night S1E2",
+    "datePretty": "20 May 2026 17:00"
+  },
+  {
+    "Status": "Upcoming",
     "Link": "https://friends.figma.com/e/mg6js4/",
     "Type": "Partner Event",
-    "Date": "2026-05-21",
+    "Date": "2026-05-21T18:30:00.000+01:00",
     "Language": [
       "PT",
       "EN"
     ],
     "Name": "Coimbra Design Meetup (Friends of Figma)",
-    "datePretty": "21 May 2026 00:00"
+    "datePretty": "21 May 2026 17:30"
+  },
+  {
+    "Status": "Upcoming",
+    "Link": "https://luma.com/pe9iker7",
+    "Type": "Partner Event",
+    "Date": "2026-05-22T17:00:00.000+01:00",
+    "Language": [
+      "PT"
+    ],
+    "Name": "AI Nest #2 - Your house is built by AI",
+    "datePretty": "22 May 2026 16:00"
   }
 ]
