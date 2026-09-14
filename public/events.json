@@ -282,6 +282,18 @@
   },
   {
     "Status": "Past",
+    "Link": "http://luma.com/r45ajho9",
+    "Type": "Afterhours",
+    "Date": "2026-05-28T18:30:00.000+01:00",
+    "Language": [
+      "PT",
+      "EN"
+    ],
+    "Name": "Coimbra Tech Afterhours #06",
+    "datePretty": "28 May 2026 17:30"
+  },
+  {
+    "Status": "Past",
     "Link": "https://luma.com/u5trexli",
     "Type": "Partner Event",
     "Date": "2026-06-25T18:30:00.000+01:00",
@@ -291,5 +303,17 @@
     ],
     "Name": "The Impostor PM Coimbra #13",
     "datePretty": "25 Jun 2026 17:30"
+  },
+  {
+    "Status": "Upcoming",
+    "Link": "https://luma.com/97lbiu9t",
+    "Type": "Afterhours",
+    "Date": "2026-09-15T18:30:00.000+01:00",
+    "Language": [
+      "PT",
+      "EN"
+    ],
+    "Name": "Coimbra Tech Afterhours #07",
+    "datePretty": "15 Sept 2026 17:30"
   }
 ]
