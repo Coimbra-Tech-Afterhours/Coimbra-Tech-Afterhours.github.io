@@ -327,5 +327,29 @@
     ],
     "Name": "Coimbra JS - September ",
     "datePretty": "17 Sept 2026 18:30"
+  },
+  {
+    "Status": "Upcoming",
+    "Link": "https://luma.com/mn4km3n9",
+    "Type": "Partner Event",
+    "Date": "2026-10-19T16:30:00.000+01:00",
+    "Language": [
+      "PT",
+      "EN"
+    ],
+    "Name": "AI Nest #6: From Product to Code, Developer Stories: AI Innovations",
+    "datePretty": "19 Oct 2026 16:30"
+  },
+  {
+    "Status": "Upcoming",
+    "Link": "https://luma.com/huzwsh2g",
+    "Type": "Partner Event",
+    "Date": "2026-11-06T17:00:00.000+00:00",
+    "Language": [
+      "PT",
+      "EN"
+    ],
+    "Name": "Coimbra, We Have It All | Portugal Tech Week",
+    "datePretty": "6 Nov 2026 17:00"
   }
 ]
